@@ -6,6 +6,7 @@
 /.env.local
 /.env.local.php
 /.env.*.local
+/docker/.password
 /config/secrets/prod/prod.decrypt.private.php
 /public/assets/
 /var/

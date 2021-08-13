@@ -1,5 +1,17 @@
 version: "3.8"
 services:
+  apache2:
+    build:
+      context: ./docker/apache2
+      args:
+        USER_ID: ${USER_ID}
+        GROUP_ID: ${GROUP_ID}
+    ports:
+      - "10001:80"
+    restart: always
+    user: "${USER_ID}:${GROUP_ID}"
+    volumes:
+      - ./docker/apache2/sites-enabled/:/etc/apache2/sites-enabled/
   database:
     environment:
       MYSQL_ROOT_PASSWORD: ${DATABASE_MYSQL_PASSWORD}
@@ -15,6 +27,6 @@ services:
     image: phpmyadmin
     restart: always
     ports:
-      - 10002:80
+      - "10002:80"
 volumes:
   database-data:
