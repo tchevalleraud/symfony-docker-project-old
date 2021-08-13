@@ -33,7 +33,7 @@ jobs:
           cd ./prod/
           rm -f .env.local
           touch .env.local
-          echo "APP_ENV=dev" >> .env.local
+          echo "APP_ENV=prod" >> .env.local
           echo "APP_SECRET=${{ secrets.APP_SECRET }}" >> .env.local
           echo "DATABASE_MYSQL_PASSWORD=${{ secrets.DATABASE_MYSQL_PASSWORD }}" >> .env.local
   build:
