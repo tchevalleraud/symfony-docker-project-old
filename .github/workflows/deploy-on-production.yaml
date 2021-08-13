@@ -36,3 +36,20 @@ jobs:
           echo "APP_ENV=dev" >> .env.local
           echo "APP_SECRET=${{ secrets.APP_SECRET }}" >> .env.local
           echo "DATABASE_MYSQL_PASSWORD=${{ secrets.DATABASE_MYSQL_PASSWORD }}" >> .env.local
+  build:
+    runs-on: [production]
+    needs: [init]
+    steps:
+      - name: Build docker image
+        run: |
+          cd ./prod/
+          make docker-build
+  deploy:
+    runs-on: [production]
+    needs: [build]
+    steps:
+      - name: Start docker environment
+        run: |
+          cd ./prod/
+          make server-start
+          sleep 30

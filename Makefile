@@ -48,6 +48,7 @@ debug:
 	@$(call cyan,"DATABASE_MYSQL_PASSWORD") : $(DATABASE_MYSQL_PASSWORD)
 
 docker-build:
+	$(dc) pull --ignore-pull-failures
 	$(dc) build
 
 doctrine-database-create:
