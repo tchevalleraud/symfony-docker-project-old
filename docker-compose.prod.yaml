@@ -1,0 +1,20 @@
+version: "3.8"
+services:
+  database:
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DATABASE_MYSQL_PASSWORD}
+    image: mysql
+    restart: always
+    volumes:
+      - database-data:/var/lib/mysql
+  phpmyadmin:
+    depends_on:
+      - database
+    environment:
+      PMA_HOST: database
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 10002:80
+volumes:
+  database-data:

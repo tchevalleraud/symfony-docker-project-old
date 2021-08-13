@@ -9,9 +9,9 @@ user	:= $(shell id -u)
 group	:= $(shell id -g)
 
 ifeq ($(APP_ENV), prod)
-	dc := USER_ID=$(user) GROUP_ID=$(group) docker-compose -f docker-compose.prod.yaml -p $(app_dir)_$(APP_ENV)
+	dc := USER_ID=$(user) GROUP_ID=$(group) docker-compose -f docker-compose.prod.yaml -p $(app_dir)_$(APP_ENV) --env-file .env.local
 else ifeq ($(APP_ENV), dev)
-	dc := USER_ID=$(user) GROUP_ID=$(group) docker-compose -f docker-compose.dev.yaml -p $(app_dir)_$(APP_ENV)
+	dc := USER_ID=$(user) GROUP_ID=$(group) docker-compose -f docker-compose.dev.yaml -p $(app_dir)_$(APP_ENV) --env-file .env.local
 endif
 
 dr	:= $(dc) run --rm
@@ -41,6 +41,11 @@ help:
 
 cache-clear:
 	$(sy) cache:clear
+
+debug:
+	@$(call cyan,"APP_ENV") : $(APP_ENV)
+	@$(call cyan,"APP_SECRET") : $(APP_SECRET)
+	@$(call cyan,"DATABASE_MYSQL_PASSWORD") : $(DATABASE_MYSQL_PASSWORD)
 
 docker-build:
 	$(dc) build
@@ -73,6 +78,8 @@ server-start:
 
 server-stop:
 	$(dc) down
+	docker volume prune -f
+	docker network prune -f
 
 test-screenshot:
 	$(php) php bin/phpunit --testsuite Screenshot
