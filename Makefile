@@ -9,9 +9,9 @@ user	:= $(shell id -u)
 group	:= $(shell id -g)
 
 ifeq ($(APP_ENV), prod)
-	dc := USER_ID=$(user) GROUP_ID=$(group) docker-compose -f docker-compose.prod.yaml -p $(app_dir)_$(APP_ENV) --env-file .env.local
+	dc := USER_ID=$(user) GROUP_ID=$(group) docker-compose -f docker-compose.prod.yaml -p $(app_dir)_$(APP_ENV) --env-file ./docker/.password
 else ifeq ($(APP_ENV), dev)
-	dc := USER_ID=$(user) GROUP_ID=$(group) docker-compose -f docker-compose.dev.yaml -p $(app_dir)_$(APP_ENV) --env-file .env.local
+	dc := USER_ID=$(user) GROUP_ID=$(group) docker-compose -f docker-compose.dev.yaml -p $(app_dir)_$(APP_ENV) --env-file ./docker/.password
 endif
 
 dr	:= $(dc) run --rm
