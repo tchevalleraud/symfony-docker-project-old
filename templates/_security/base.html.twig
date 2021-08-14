@@ -26,8 +26,9 @@
         {% endblock %}
     </head>
     <body class="text-center">
-        <main class="form-signin">
+        <main class="form-signin" style="max-width: 100%;">
             {% block body '' %}
+            {{ dump(app.request) }}
         </main>
     </body>
 </html>
