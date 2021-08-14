@@ -52,7 +52,7 @@ jobs:
         run: |
           cd ./prod/
           make vendor/autoload.php
-          make public/assets-dev
+          make public/assets
   deploy:
     runs-on: [production]
     needs: [build]
