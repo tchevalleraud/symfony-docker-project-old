@@ -63,7 +63,7 @@ jobs:
           sleep 30
       - name: Database deployment
         run: |
-          cd ./dev/
+          cd ./prod/
           make doctrine-database-drop
           make doctrine-database-create
       - name: Cache clear
