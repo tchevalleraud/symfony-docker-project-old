@@ -35,6 +35,7 @@ services:
     command: ['symfony', 'server:start', '--port=80']
     links:
       - database
+    user: '${USER_ID}:${GROUP_ID}'
     restart: always
     volumes:
       - .:/var/www
