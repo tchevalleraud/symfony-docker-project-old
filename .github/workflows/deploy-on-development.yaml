@@ -67,6 +67,7 @@ jobs:
           cd ./dev/
           make doctrine-database-drop
           make doctrine-database-create
+          make doctrine-fixtures-load
       - name: Cache clear
         run: |
           cd ./dev/
