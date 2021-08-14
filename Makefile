@@ -18,7 +18,7 @@ dr	:= $(dc) run --rm
 de	:= $(dc) exec
 
 node	:= $(dr) node
-php		:= $(dr) --no-deps apache
+php		:= $(dr) --no-deps php
 sy		:= $(php) php bin/console
 
 help:
@@ -52,6 +52,8 @@ docker-build:
 	$(dc) build
 
 doctrine-database-create:
+	#$(sy) doctrine:database:create --if-not-exists
+	#$(sy) doctrine:schema:update --force
 	$(sy) doctrine:database:create -c mysql --if-not-exists
 	$(sy) doctrine:database:create -c local
 	$(sy) doctrine:schema:update --force --em mysql
