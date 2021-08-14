@@ -68,5 +68,5 @@ jobs:
           make doctrine-database-create
       - name: Cache clear
         run: |
-          cd ./dev/
+          cd ./prod/
           make cache-clear
