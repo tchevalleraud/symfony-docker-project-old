@@ -1,8 +1,7 @@
-FROM php:7.4-fpm-alpine
+FROM php:7.4-fpm
 
-RUN apk update
-RUN apk upgrade
-RUN apk add bash
+RUN apt-get update
+RUN apt-get install -y bash wget
 
 RUN docker-php-ext-install mysqli pdo pdo_mysql
 RUN docker-php-ext-enable pdo_mysql
