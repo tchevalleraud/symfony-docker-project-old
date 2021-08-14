@@ -65,8 +65,8 @@ jobs:
       - name: Database deployment
         run: |
           cd ./prod/
-          make doctrine-database-drop
           make doctrine-database-create
+          make app/system/init
       - name: Cache clear
         run: |
           cd ./prod/

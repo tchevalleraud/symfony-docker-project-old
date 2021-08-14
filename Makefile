@@ -12,6 +12,8 @@ ifeq ($(APP_ENV), prod)
 	dc := USER_ID=$(user) GROUP_ID=$(group) docker-compose -f docker-compose.prod.yaml -p $(app_dir)_$(APP_ENV) --env-file ./docker/.password
 else ifeq ($(APP_ENV), dev)
 	dc := USER_ID=$(user) GROUP_ID=$(group) docker-compose -f docker-compose.dev.yaml -p $(app_dir)_$(APP_ENV) --env-file ./docker/.password
+else ifeq ($(APP_ENV), test)
+	dc := USER_ID=$(user) GROUP_ID=$(group) docker-compose -f docker-compose.test.yaml -p $(app_dir)_$(APP_ENV) --env-file ./docker/.password
 endif
 
 dr	:= $(dc) run --rm
@@ -38,6 +40,9 @@ help:
 	@$(call cyan,"test-screenshot")
 	@$(call cyan,"test-unit-all")
 	@$(call cyan,"vendor/autoload.php")
+
+app/system/init:
+	$(sy) app:system:init
 
 cache-clear:
 	$(sy) cache:clear
@@ -82,11 +87,23 @@ server-stop:
 	docker volume prune -f
 	docker network prune -f
 
+test-codecoverage:
+	$(php) php bin/phpunit --exclude-group panther,screenshot --coverage-clover coverage.xml
+
 test-screenshot:
 	$(php) php bin/phpunit --testsuite Screenshot
 
 test-unit-all:
-	$(php) php bin/phpunit --exclude-group screenshot --testdox
+	$(php) php bin/phpunit --exclude-group panther,screenshot --testdox
+
+test-unit-domain:
+	$(php) php bin/phpunit --testsuite Domain --testdox
+
+test-unit-globals:
+	$(php) php bin/phpunit --testsuite Globals --testdox
+
+test-unit-frontoffice:
+	$(php) php bin/phpunit --testsuite FrontOffice --exclude-group panther --testdox
 
 vendor/autoload.php: composer.lock
 	$(php) composer update

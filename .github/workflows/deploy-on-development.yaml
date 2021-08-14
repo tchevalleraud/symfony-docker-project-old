@@ -65,10 +65,65 @@ jobs:
       - name: Database deployment
         run: |
           cd ./dev/
-          make doctrine-database-drop
           make doctrine-database-create
-          make doctrine-fixtures-load
+          make app/system/init
       - name: Cache clear
         run: |
           cd ./dev/
           make cache-clear
+  tests-globals:
+    runs-on: [development]
+    needs: [deploy]
+    steps:
+      - name: UnitTest
+        run: |
+          cd ./dev/
+          make test-unit-globals
+  tests-domain:
+    runs-on: [development]
+    needs: [deploy]
+    steps:
+      - name: UnitTest
+        run: |
+          cd ./dev/
+          make test-unit-domain
+  tests-frontoffice:
+    runs-on: [development]
+    needs: [deploy]
+    steps:
+      - name: UnitTest
+        run: |
+          cd ./dev/
+          make test-unit-frontoffice
+  codacy:
+    runs-on: [development]
+    needs: [tests-globals, tests-domain, tests-frontoffice]
+    steps:
+      - name: Remove previous report
+        run: |
+          cd ./dev/
+          rm -Rf coverage.xml
+      - name: UnitTest
+        run: |
+          cd ./dev/
+          make test-codecoverage
+      - name: Upload report
+        run: |
+          cd ./dev/
+          bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r coverage.xml --project-token ${{ secrets.CODACY_PROJECT_TOKEN }}
+  codecov:
+    runs-on: [development]
+    needs: [tests-globals, tests-domain, tests-frontoffice]
+    steps:
+      - name: Remove previous report
+        run: |
+          cd ./dev/
+          rm -Rf coverage.xml
+      - name: UnitTest
+        run: |
+          cd ./dev/
+          make test-codecoverage
+      - name: Upload report
+        run: |
+          cd ./dev/
+          CODECOV_TOKEN=${{ secrets.CODECOV_TOKEN }} bash <(curl -s https://codecov.io/bash)

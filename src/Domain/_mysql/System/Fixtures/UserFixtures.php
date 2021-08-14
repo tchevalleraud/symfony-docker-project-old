@@ -15,9 +15,9 @@
         }
 
         public function load(ObjectManager $manager){
-            $manager->persist($this->newUser("thibault.chevalleraud@gmail.com"));
+            $manager->persist($this->newUser("admin@pwsb.fr"));
             for($i = 1; $i <= 10; $i++){
-                $manager->persist($this->newUser("user".$i."@test.com"));
+                $manager->persist($this->newUser("user".$i."@pwsb.fr"));
             }
             $manager->flush();
         }
