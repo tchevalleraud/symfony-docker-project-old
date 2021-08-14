@@ -16,7 +16,7 @@ jobs:
         if: steps.check-directory.outputs.exist == 'true'
         run: |
           cd ./dev/
-          git checkout master
+          git checkout develop
           git add .
           git reset --hard
           git fetch origin --tags
@@ -27,7 +27,7 @@ jobs:
           git clone git@github.com:tchevalleraud/symfony-docker-project.git
           mv symfony-docker-project/ dev/
           cd ./dev/
-          git checkout master
+          git checkout develop
       - name: Update environment
         run: |
           cd ./dev/
