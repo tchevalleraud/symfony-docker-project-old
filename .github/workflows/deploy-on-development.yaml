@@ -61,6 +61,7 @@ jobs:
         run: |
           cd ./dev/
           make server-start
+          make server-restart
           sleep 30
       - name: Database deployment
         run: |
