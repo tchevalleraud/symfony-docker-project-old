@@ -34,6 +34,39 @@ jobs:
           rm -f .env
           touch .env
           echo "APP_ENV=dev" >> .env
-          echo "APP_SECRET=${{ secrets.APP_SECRET }}" >> .env
+          echo "APP_NAME=\"symfony docker project\"" >> .env
+          echo "APP_SECRET=\"${{ secrets.APP_SECRET }}\"" >> .env
+          echo "DATABASE_LOCAL_URL=\"sqlite:///%kernel.project_dir%/var/local.db\"" >> .env
+          echo "DATABASE_MYSQL_URL=\"mysql://root:${{ secrets.DATABASE_MYSQL_PASSWORD }}@database:3306/symfony-docker-project\"" >> .env
           rm -f ./docker/.password
           echo "DATABASE_MYSQL_PASSWORD=${{ secrets.DATABASE_MYSQL_PASSWORD }}" >> ./docker/.password
+  build:
+    runs-on: [ development ]
+    needs: [ init ]
+    steps:
+      - name: Build docker image
+        run: |
+          cd ./dev/
+          make docker-build
+      - name: Build dependancies
+        run: |
+          cd ./dev/
+          make vendor/autoload.php
+  deploy:
+    runs-on: [ development ]
+    needs: [ build ]
+    steps:
+      - name: Start docker environment
+        run: |
+          cd ./dev/
+          make server-start
+          sleep 30
+      - name: Database deployment
+        run: |
+          cd ./dev/
+          make doctrine-database-drop
+          make doctrine-database-create
+      - name: Cache clear
+        run: |
+          cd ./dev/
+          make cache-clear
