@@ -76,6 +76,13 @@ public/assets-dev:
 	$(node) yarn
 	$(node) yarn run dev
 
+server-deploy:
+	make docker-build
+	make server-start
+	sleep 30
+	make doctrine-database-create
+	make app/system/init
+
 server-restart:
 	$(dc) restart
 
