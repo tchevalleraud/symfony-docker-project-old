@@ -1,0 +1,6 @@
+ignore:
+  - "src/Kernel.php"
+  - "src/Application/Security/"
+  - "src/Application/Command/"
+  - "src/Domain/_mysql/System/Fixtures/"
+  - "src/Infrastructure/Profiler/"

@@ -24,24 +24,25 @@
 
                 foreach ($this->xml->test as $test){
                     $d = (array) $test;
-                    $className  = $d['@attributes']['className'];
-                    $methodName = $d['@attributes']['methodName'];
-                    $status     = $d['@attributes']['status'];
-                    $time       = $d['@attributes']['time'];
+                    $className              = $d['@attributes']['className'];
+                    $methodName             = $d['@attributes']['methodName'];
+                    $prettifiedMethodName   = $d['@attributes']['prettifiedMethodName'];
+                    $status                 = $d['@attributes']['status'];
+                    $time                   = $d['@attributes']['time'];
 
                     if($status == 0) $data['ok'] = $data['ok'] + 1;
                     else $data['error'] = $data['error'] + 1;
 
                     $data['tests'][$className.":".$methodName] = [
-                        'className'     => $className,
-                        'methodName'    => $methodName,
-                        'status'        => $status,
-                        'time'          => $time
+                        'className'             => $className,
+                        'methodName'            => $methodName,
+                        'prettifiedMethodName'  => $prettifiedMethodName,
+                        'status'                => $status,
+                        'time'                  => $time
                     ];
 
                     $data['time'] = $data['time'] + $time;
                 }
-
 
                 ksort($data['tests']);
                 $data['time'] = round($data['time'], 2);

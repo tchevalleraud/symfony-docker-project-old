@@ -67,8 +67,15 @@
                         {% else %}<span class="label status-error">ERROR</span>
                         {% endif %}
                     </td>
-                    <td class="font-normal">{{ test.className }}</td>
-                    <td class="font-normal">{{ test.methodName }}</td>
+                    <td>
+                        <b>{{ test.className }}</b>
+                        <div>
+                            <span class="text-muted">
+                                {{ test.methodName }}
+                            </span>
+                        </div>
+                    </td>
+                    <td class="font-normal">{{ test.prettifiedMethodName }}</td>
                     <td class="font-normal">
                         {{ test.time }} <span class="unit">ms</span>
                     </td>
