@@ -96,6 +96,9 @@ test-screenshot:
 test-unit-all:
 	$(php) php bin/phpunit --exclude-group panther,screenshot --testdox
 
+test-unit-all-report:
+	$(php) php bin/phpunit --exclude-group panther,screenshot --testdox --testdox-xml testdox.xml
+
 test-unit-domain:
 	$(php) php bin/phpunit --testsuite Domain --testdox
 

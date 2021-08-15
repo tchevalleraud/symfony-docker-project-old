@@ -22,6 +22,7 @@
 /drivers/
 /coverage.xml
 /phpunit.xml
+/testdox.xml
 /screenshot/
 /report.xml
 .phpunit.result.cache

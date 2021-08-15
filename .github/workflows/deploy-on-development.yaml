@@ -97,6 +97,18 @@ jobs:
         run: |
           cd ./dev/
           make test-unit-frontoffice
+  profiler:
+    runs-on: [ development ]
+    needs: [ tests-globals, tests-domain, tests-frontoffice ]
+    steps:
+      - name: Remove previous report
+        run: |
+          cd ./dev/
+          rm -Rf testdox.xml
+      - name: UnitTest
+        run: |
+          cd ./dev/
+          make test-unit-all-report
   codacy:
     runs-on: [development]
     needs: [tests-globals, tests-domain, tests-frontoffice]

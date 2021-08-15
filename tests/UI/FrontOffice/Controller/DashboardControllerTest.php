@@ -5,6 +5,10 @@
     use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
     use Symfony\Component\HttpFoundation\Response;
 
+    /**
+     * @group frontoffice
+     * @group controller
+     */
     class DashboardControllerTest extends WebTestCase {
 
         use WebTestCaseExtend;
