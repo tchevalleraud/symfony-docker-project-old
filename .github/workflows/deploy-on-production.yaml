@@ -61,8 +61,9 @@ jobs:
         run: |
           cd ./prod/
           make server-start
+          sleep 60
           make server-restart
-          sleep 30
+          sleep 60
       - name: Database deployment
         run: |
           cd ./prod/
@@ -72,3 +73,35 @@ jobs:
         run: |
           cd ./prod/
           make cache-clear
+  codacy:
+    runs-on: [development]
+    needs: [deploy]
+    steps:
+      - name: Remove previous report
+        run: |
+          cd ./dev/
+          rm -Rf coverage.xml
+      - name: UnitTest
+        run: |
+          cd ./dev/
+          make test-codecoverage
+      - name: Upload report
+        run: |
+          cd ./dev/
+          bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r coverage.xml --project-token ${{ secrets.CODACY_PROJECT_TOKEN }}
+  codecov:
+    runs-on: [development]
+    needs: [deploy]
+    steps:
+      - name: Remove previous report
+        run: |
+          cd ./dev/
+          rm -Rf coverage.xml
+      - name: UnitTest
+        run: |
+          cd ./dev/
+          make test-codecoverage
+      - name: Upload report
+        run: |
+          cd ./dev/
+          CODECOV_TOKEN=${{ secrets.CODECOV_TOKEN }} bash <(curl -s https://codecov.io/bash)
