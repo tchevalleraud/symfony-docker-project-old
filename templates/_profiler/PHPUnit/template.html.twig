@@ -1,0 +1,83 @@
+{% extends '@WebProfiler/Profiler/layout.html.twig' %}
+
+{% block toolbar %}
+    {% set icon %}
+        {{ include('_profiler/icons/phpunit.svg') }}
+        <span class="sf-toolbar-value">PHPUnit</span>
+    {% endset %}
+
+    {% set text %}
+        <div class="sf-toolbar-info-piece">
+            <b>Execution time</b> {{ collector.time }} ms
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b>OK</b>
+            <span class="sf-toolbar-status sf-toolbar-status-green">{{ collector.ok }}</span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b>Errors</b>
+            <span class="sf-toolbar-status sf-toolbar-status-red">{{ collector.error }}</span>
+        </div>
+    {% endset %}
+    {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { link: true }) }}
+{% endblock %}
+
+{% block head %}
+    {{ parent() }}
+{% endblock %}
+
+{% block menu %}
+    <span class="label">
+        <span class="icon">{{ include('_profiler/icons/phpunit.svg') }}</span>
+        <strong>PHPUnit</strong>
+    </span>
+{% endblock %}
+
+{% block panel %}
+    <h2>PHPUnit</h2>
+    <div class="metrics">
+        <div class="metric">
+            <span class="value">{{ collector.time }} <span class="unit">ms</span></span>
+            <span class="label">Total time</span>
+        </div>
+        <div class="metric-divider"></div>
+        <div class="metric">
+            <span class="value">{{ collector.ok }}</span>
+            <span class="label">Success tests</span>
+        </div>
+        <div class="metric">
+            <span class="value">{{ collector.error }}</span>
+            <span class="label">Error tests</span>
+        </div>
+    </div>
+    <table>
+        <thead class="small">
+            <tr>
+                <th>Status</th>
+                <th>Class</th>
+                <th>Method</th>
+                <th>Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for test in collector.tests %}
+                <tr>
+                    <td class="font-normal">
+                        {% if test.status == 0 %}<span class="label status-success">OK</span>
+                        {% else %}<span class="label status-error">ERROR</span>
+                        {% endif %}
+                    </td>
+                    <td class="font-normal">{{ test.className }}</td>
+                    <td class="font-normal">{{ test.methodName }}</td>
+                    <td class="font-normal">
+                        {{ test.time }} <span class="unit">ms</span>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4" class="text-center">No tests found.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
