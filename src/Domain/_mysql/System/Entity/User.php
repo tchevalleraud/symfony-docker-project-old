@@ -5,6 +5,7 @@
     use Doctrine\ORM\Mapping as ORM;
     use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
     use Symfony\Component\Security\Core\User\UserInterface;
+    use Symfony\Component\Validator\Constraints as Assert;
 
     /**
      * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -20,6 +21,13 @@
 
         /**
          * @ORM\Column(type="string", length=180, unique=true)
+         * @Assert\Length(
+         *     min="6",
+         *     max="60",
+         *     minMessage="your email must be at least {{ limit }} characters long",
+         *     maxMessage="your email connot be longer than {{ limit }} characters"
+         * )
+         * @Assert\NotBlank()
          */
         private $email;
 
@@ -36,10 +44,16 @@
 
         /**
          * @ORM\Column(type="string", unique=true, nullable=true)
+         * @Assert\NotBlank()
+         * @Assert\Regex(
+         *     pattern="/^([0-9a-z]{6}-){4}[0-9a-z]{6}$/",
+         *     match=true,
+         *     message="your api key is not securized"
+         * )
          */
         private $apiToken;
 
-        public function getId(): ?int {
+        public function getId(): ?string {
             return $this->id;
         }
 
