@@ -1,6 +1,7 @@
 doctrine:
     orm:
         auto_generate_proxy_classes: false
+        default_entity_manager: 'mysql'
         metadata_cache_driver:
             type: pool
             pool: doctrine.system_cache_pool
