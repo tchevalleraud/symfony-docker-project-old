@@ -3,7 +3,9 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>{% block title %}TEST{% endblock %}</title>
+        <title>{% block title %}{{ APP_NAME }}{% endblock %}</title>
+
+        <link rel="shortcut icon" href="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.freebiesupply.com%2Flogos%2Flarge%2F2x%2Fsymfony-logo-png-transparent.png&f=1&nofb=1">
 
         {% block stylesheets %}
             <link href="{{ asset('assets/css/libs/bootstrap/bootstrap.css') }}" rel="stylesheet">
@@ -22,7 +24,6 @@
                 }
             </style>
             <link href="{{ asset('assets/css/signin.css') }}" rel="stylesheet">
-            {#{{ encore_entry_link_tags('app') }}#}
         {% endblock %}
     </head>
     <body class="text-center">

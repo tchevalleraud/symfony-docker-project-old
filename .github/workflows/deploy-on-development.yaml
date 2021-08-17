@@ -34,7 +34,7 @@ jobs:
           rm -f .env
           touch .env
           echo "APP_ENV=dev" >> .env
-          echo "APP_NAME=\"symfony docker project\"" >> .env
+          echo "APP_NAME=\"Symfony Docker Project\"" >> .env
           echo "APP_SECRET=\"${{ secrets.APP_SECRET }}\"" >> .env
           echo "DATABASE_LOCAL_URL=\"sqlite:///%kernel.project_dir%/var/local.db\"" >> .env
           echo "DATABASE_MYSQL_URL=\"mysql://root:${{ secrets.DATABASE_MYSQL_PASSWORD }}@database:3306/symfony-docker-project\"" >> .env
