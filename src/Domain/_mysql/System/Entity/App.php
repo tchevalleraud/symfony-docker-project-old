@@ -1,7 +1,7 @@
 <?php
     namespace App\Domain\_mysql\System\Entity;
 
-    use App\Domain\_mysql\System\Repository\UserRepository;
+    use App\Domain\_mysql\System\Repository\AppRepository;
     use Doctrine\ORM\Mapping as ORM;
     use OpenApi\Annotations as OA;
     use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -9,11 +9,11 @@
     use Symfony\Component\Validator\Constraints as Assert;
 
     /**
-     * @ORM\Entity(repositoryClass=UserRepository::class)
-     * @ORM\Table(name="system_user")
-     * @OA\Schema(schema="SystemUser")
+     * @ORM\Entity(repositoryClass=AppRepository::class)
+     * @ORM\Table(name="system_app")
+     * @OA\Schema(schema="SystemApp")
      */
-    class User implements UserInterface, PasswordAuthenticatedUserInterface {
+    class App implements UserInterface, PasswordAuthenticatedUserInterface {
 
         /**
          * @ORM\Id
@@ -25,16 +25,14 @@
 
         /**
          * @ORM\Column(type="string", length=180, unique=true)
-         * @OA\Property(type="string", format="email")
-         * @Assert\Length(
-         *     min="6",
-         *     max="60",
-         *     minMessage="your email must be at least {{ limit }} characters long",
-         *     maxMessage="your email connot be longer than {{ limit }} characters"
-         * )
-         * @Assert\NotBlank()
          */
         private $email;
+
+        /**
+         * @ORM\Column(type="string", length=100, unique=true)
+         * @OA\Property(type="string")
+         */
+        private $name;
 
         /**
          * @ORM\Column(type="json")
@@ -44,7 +42,6 @@
 
         /**
          * @ORM\Column(type="string")
-         * @OA\Property(type="string", format="password")
          */
         private $password;
 
@@ -70,6 +67,15 @@
 
         public function setEmail(string $email): self {
             $this->email = $email;
+            return $this;
+        }
+
+        public function getName(): ?string {
+            return $this->name;
+        }
+
+        public function setName(string $name): self {
+            $this->name = $name;
             return $this;
         }
 

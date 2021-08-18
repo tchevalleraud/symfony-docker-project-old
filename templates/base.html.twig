@@ -5,6 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{% block title %}{{ APP_NAME }}{% endblock %}</title>
 
+        <link rel="shortcut icon" href="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.freebiesupply.com%2Flogos%2Flarge%2F2x%2Fsymfony-logo-png-transparent.png&f=1&nofb=1">
+
         {% block stylesheets %}
             <link href="{{ asset('assets/css/libs/bootstrap/bootstrap.css') }}" rel="stylesheet">
             <style>
@@ -26,7 +28,7 @@
     </head>
     <body>
         <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-            <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="{{ path('root') }}">{{ APP_NAME | capitalize }}</a>
+            <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="{{ path('root') }}">{{ APP_NAME }}</a>
             <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
