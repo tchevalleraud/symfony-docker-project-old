@@ -53,6 +53,15 @@ jobs:
           cd ./dev/
           make vendor/autoload.php
           make public/assets-dev
+      - name: Build Swagger documentation
+        run: |
+          cd ./dev/
+          make swagger
+      - name: Generate certificate
+        run: |
+          cd ./dev/
+          openssl genrsa -out ./config/jwt/private_key.pem 4096
+          openssl rsa -pubout -in config/jwt/private_key.pem -out config/jwt/public_key.pem
   deploy:
     runs-on: [ development ]
     needs: [ build ]

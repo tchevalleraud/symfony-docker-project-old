@@ -2,6 +2,8 @@
     namespace App\Application\Security;
 
     use Doctrine\ORM\EntityManagerInterface;
+    use Firebase\JWT\JWT;
+    use Symfony\Component\Config\FileLocator;
     use Symfony\Component\HttpFoundation\JsonResponse;
     use Symfony\Component\HttpFoundation\Request;
     use Symfony\Component\HttpFoundation\Response;
@@ -22,6 +24,7 @@
         public function supports(Request $request){
             if($request->headers->has('X-AUTH-TOKEN')) return $request->headers->has('X-AUTH-TOKEN');
             elseif($request->server->has('X-AUTH-TOKEN')) return $request->server->has('X-AUTH-TOKEN');
+            elseif($request->headers->has('authorization')) return $request->headers->has('authorization');
             else {
                 return true;
             }
@@ -30,7 +33,13 @@
         public function getCredentials(Request $request){
             if($request->headers->has('X-AUTH-TOKEN')) return $request->headers->get('X-AUTH-TOKEN');
             elseif($request->server->has('X-AUTH-TOKEN')) return $request->server->get('X-AUTH-TOKEN');
-            else return "NULL";
+            elseif($request->headers->has('authorization')) {
+                $fileLocator = new FileLocator([__DIR__.'/../../../config/jwt/']);
+                $publicKey = file_get_contents($fileLocator->locate("public_key.pem", null, false)[0]);
+                $jwt = str_replace("Bearer ", "", $request->headers->get('authorization'));
+                $data = JWT::decode($jwt, $publicKey, array('RS256'));
+                return $data->token;
+            } else return "NULL";
         }
 
         public function getUser($credentials, UserProviderInterface $userProvider){

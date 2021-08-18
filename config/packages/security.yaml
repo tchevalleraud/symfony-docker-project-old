@@ -9,15 +9,24 @@ security:
     enable_authenticator_manager: true
 
     password_hashers:
+        App\Domain\_mysql\System\Entity\App:
+            algorithm: auto
         App\Domain\_mysql\System\Entity\User:
             algorithm: auto
 
     providers:
+        system_api_provider:
+            chain:
+                providers: [system_app_api_token_provider, system_user_api_token_provider]
+        system_app_api_token_provider:
+            entity:
+                class: App\Domain\_mysql\System\Entity\App
+                property: apiToken
         system_user_email_provider:
             entity:
                 class: App\Domain\_mysql\System\Entity\User
                 property: email
-        system_user_token_provider:
+        system_user_api_token_provider:
             entity:
                 class: App\Domain\_mysql\System\Entity\User
                 property: apiToken
@@ -27,17 +36,18 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
+        api_login:
+            pattern: ^/api/v2/login
+            security: false
+
         api:
             guard:
                 authenticators:
                     - App\Application\Security\APIAuthenticator
             pattern: ^/api/v2
-            provider: system_user_token_provider
+            provider: system_api_provider
 
         main:
-            #guard:
-            #    authenticators:
-            #        - App\Application\Security\DefaultAuthenticator
             custom_authenticator: App\Application\Security\AppAuthenticator
             logout:
                 path: app.security.logout

@@ -13,6 +13,7 @@ services:
     image: nginx:alpine
     links:
       - php
+      - swagger
     ports:
       - "12001:80"
     volumes:
@@ -49,5 +50,11 @@ services:
     restart: always
     ports:
       - "12002:80"
+  swagger:
+    environment:
+      SWAGGER_JSON: /foo/swagger.json
+    image: swaggerapi/swagger-ui
+    volumes:
+      - .:/foo
 volumes:
   database-data:

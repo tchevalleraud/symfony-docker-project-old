@@ -100,6 +100,9 @@
     "egulias/email-validator": {
         "version": "3.1.1"
     },
+    "firebase/php-jwt": {
+        "version": "v5.4.0"
+    },
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.5"
     },
@@ -658,5 +661,8 @@
     },
     "webmozart/assert": {
         "version": "1.10.0"
+    },
+    "zircote/swagger-php": {
+        "version": "3.2.3"
     }
 }

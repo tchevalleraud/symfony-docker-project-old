@@ -2,6 +2,10 @@
 /.idea/
 ###< PHPStorm ###
 
+###> jwt-auth ###
+/config/jwt/*
+###< jwt-auth ###
+
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php

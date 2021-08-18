@@ -94,6 +94,9 @@ server-stop:
 	docker volume prune -f
 	docker network prune -f
 
+swagger:
+	$(php) ./vendor/bin/openapi --format json --output ./swagger.json ./config/swagger/ ./src/
+
 test-codecoverage:
 	$(php) php bin/phpunit --exclude-group panther,screenshot --coverage-clover coverage.xml
 
