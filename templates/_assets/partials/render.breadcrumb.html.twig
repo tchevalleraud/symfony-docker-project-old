@@ -1,0 +1,10 @@
+{% for item in items %}
+    {% if loop.last %}
+        <li class="breadcrumb-item text-dark">{{ item.label | capitalize }}</li>
+    {% else %}
+        <li class="breadcrumb-item text-muted">
+            <a href="{{ path(item.route, item.params) }}" class="text-muted text-hover-primary">{{ item.label | capitalize }}</a>
+        </li>
+        <li class="breadcrumb-item"><span class="bullet bg-gray-200 w-5px h-2px"></span></li>
+    {% endif %}
+{% endfor %}

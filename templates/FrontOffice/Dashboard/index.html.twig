@@ -1,19 +1,37 @@
-{% extends "base.html.twig" %}
+{% extends "FrontOffice/base.html.twig" %}
 
 {% block title %}Dashboard - {{ parent() }}{% endblock %}
 
+{% block topbar_left %}
+    <div data-kt-swapper="true" data-kt-swapper-mode="prepend" data-kt-swapper-parent="{default: '#kt_content_container', 'lg': '#kt_header_nav'}" class="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0">
+        <h1 class="d-flex align-items-center text-dark fw-bolder fs-3 my-1">Dashboard</h1>
+        <span class="h-20px border-gray-200 border-start mx-4"></span>
+        <ul class="breadcrumb breadcrumb-separatorless fw-bold fs-7 my-1">
+            {{ breadcrumb(app.request) }}
+        </ul>
+    </div>
+{% endblock %}
+
 {% block body %}
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1>Dashboard</h1>
-        <div class="btn-toolbar mb-2 mb-md-0">
-            <div class="btn-group">
-                <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
-                <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+    <div class="post d-flex flex-column-fluid" id="kt_post">
+        <div id="kt_content_container" class="container">
+            <div class="card mb-10">
+                <div class="card-body d-flex align-items-center p-5 p-lg-8">
+                    <div class="d-flex h-50px w-50px h-lg-80px w-lg-80px flex-shrink-0 flex-center position-relative align-self-start align-self-lg-center mt-3 mt-lg-0">
+                        <span class="svg-icon svg-icon-primary position-absolute opacity-15">
+                            {{ include('_svg/duotone/Layout/Layout-polygon.svg', {"class": "h-50px w-50px h-lg-80px w-lg-80px"}) }}
+                        </span>
+                        <span class="svg-icon svg-icon-2x svg-icon-lg-3x svg-icon-primary position-absolute">
+                            {{ include('_svg/duotone/Tools/Tools.svg') }}
+                        </span>
+                    </div>
+                    <div class="ms-6">
+                        <p class="list-unstyled text-gray-600 fw-bold fs-6 p-0 m-0">
+                            This page is currently under maintenance or under construction.
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    User : {{ app.user.email }}<br/>
-    API : {{ app.user.apiToken }}<br/>
-    <hr/>
-    <a href="{{ path('api.docs.index') }}" target="_blank">API Docs</a>
 {% endblock %}

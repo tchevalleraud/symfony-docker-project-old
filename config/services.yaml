@@ -11,6 +11,11 @@ services:
             - '../src/Kernel.php'
             - '../src/Tests/'
 
+    App\Application\Annotation\Breadcrumb\BreadcrumbReader:
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+        arguments: ['@annotation_reader']
+
     App\Infrastructure\Profiler\PHPUnit\RequestProfiler:
         tags:
             - name: PHPUnit

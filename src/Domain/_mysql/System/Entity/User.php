@@ -24,6 +24,24 @@
         private $id;
 
         /**
+         * @ORM\Column(type="string", length=255, nullable=true)
+         * @OA\Property(type="string", format="uri")
+         */
+        private $avatar;
+
+        /**
+         * @ORM\Column(type="string", length=100)
+         * @OA\Property(type="string")
+         */
+        private $lastname;
+
+        /**
+         * @ORM\Column(type="string", length=100)
+         * @OA\Property(type="string")
+         */
+        private $firstname;
+
+        /**
          * @ORM\Column(type="string", length=180, unique=true)
          * @OA\Property(type="string", format="email")
          * @Assert\Length(
@@ -60,8 +78,39 @@
          */
         private $apiToken;
 
+        public function __toString() {
+            return $this->getId();
+        }
+
         public function getId(): ?string {
             return $this->id;
+        }
+
+        public function getAvatar() {
+            return $this->avatar;
+        }
+
+        public function setAvatar($avatar): self {
+            $this->avatar = $avatar;
+            return $this;
+        }
+
+        public function getLastname() {
+            return $this->lastname;
+        }
+
+        public function setLastname($lastname): self {
+            $this->lastname = strtolower($lastname);
+            return $this;
+        }
+
+        public function getFirstname() {
+            return $this->firstname;
+        }
+
+        public function setFirstname($firstname): self {
+            $this->firstname = strtolower($firstname);
+            return $this;
         }
 
         public function getEmail(): ?string {
@@ -69,29 +118,10 @@
         }
 
         public function setEmail(string $email): self {
-            $this->email = $email;
+            $this->email = strtolower($email);
             return $this;
         }
 
-        /**
-         * A visual identifier that represents this user.
-         *
-         * @see UserInterface
-         */
-        public function getUserIdentifier(): string {
-            return (string) $this->email;
-        }
-
-        /**
-         * @deprecated since Symfony 5.3, use getUserIdentifier instead
-         */
-        public function getUsername(): string {
-            return (string) $this->email;
-        }
-
-        /**
-         * @see UserInterface
-         */
         public function getRoles(): array {
             $roles = $this->roles;
             $roles[] = 'ROLE_USER';
@@ -103,9 +133,6 @@
             return $this;
         }
 
-        /**
-         * @see PasswordAuthenticatedUserInterface
-         */
         public function getPassword(): string {
             return $this->password;
         }
@@ -113,16 +140,6 @@
         public function setPassword(string $password): self {
             $this->password = $password;
             return $this;
-        }
-
-        /**
-         * Returning a salt is only needed, if you are not using a modern
-         * hashing algorithm (e.g. bcrypt or sodium) in your security.yaml.
-         *
-         * @see UserInterface
-         */
-        public function getSalt(): ?string {
-            return null;
         }
 
         public function getApiToken(): string {
@@ -134,12 +151,30 @@
             return $this;
         }
 
-        /**
-         * @see UserInterface
+        /***************************************************************************************************************
+         * CUSTOM FUNCTION
          */
+        public function getUserIdentifier(): string {
+            return (string) $this->email;
+        }
+
+        public function getUsername(): string {
+            return (string) $this->email;
+        }
+
+        public function getSalt(): ?string {
+            return null;
+        }
+
         public function eraseCredentials() {
-            // If you store any temporary, sensitive data on the user, clear it here
-            // $this->plainPassword = null;
+        }
+
+        public function getInitial(){
+            return $this->firstname[0].$this->lastname[0];
+        }
+
+        public function getFullName(){
+            return $this->lastname." ".$this->firstname;
         }
 
     }

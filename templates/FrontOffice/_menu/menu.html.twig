@@ -1,0 +1,54 @@
+{% set activeRoute = app.request.attributes.get('_route') %}
+<div class="menu-item">
+    <a class="menu-link {{ 'frontoffice.dashboard.index' in activeRoute ? 'active' }}" href="{{ path('frontoffice.dashboard.index') }}">
+        <span class="menu-icon">
+            <span class="svg-icon svg-icon-2">
+                {{ include('_svg/duotone/Design/PenAndRuller.svg') }}
+            </span>
+        </span>
+        <span class="menu-title">Dashboard</span>
+    </a>
+</div>
+<div class="menu-item">
+    <a class="menu-link {{ 'frontoffice.dashboard.v2' in activeRoute ? 'active' }}" href="{{ path('frontoffice.dashboard.v2') }}">
+        <span class="menu-icon">
+            <span class="svg-icon svg-icon-2">
+                {{ include('_svg/duotone/Design/PenAndRuller.svg') }}
+            </span>
+        </span>
+        <span class="menu-title">Dashboard 2</span>
+    </a>
+</div>
+<div class="menu-item">
+    <a class="menu-link {{ 'frontoffice.dashboard.v3' in activeRoute ? 'active' }}" href="{{ path('frontoffice.dashboard.v3') }}">
+        <span class="menu-icon">
+            <span class="svg-icon svg-icon-2">
+                {{ include('_svg/duotone/Design/PenAndRuller.svg') }}
+            </span>
+        </span>
+        <span class="menu-title">Dashboard 3</span>
+    </a>
+</div>
+
+<div class="menu-item">
+    <div class="menu-content pt-8 pb-2">
+        <span class="menu-section text-muted text-uppercase fs-8 ls-1">APPS</span>
+    </div>
+</div>
+<div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ 'frontoffice.users.' in activeRoute ? 'hover show' }}">
+    <span class="menu-link">
+        <span class="menu-icon">
+            <span class="svg-icon svg-icon-2">{{ include('_svg/duotone/General/Shield-protected.svg') }}</span>
+        </span>
+        <span class="menu-title">User management</span>
+        <span class="menu-arrow"></span>
+    </span>
+    <div class="menu-sub menu-sub-accordion">
+        <div class="menu-item">
+            <a class="menu-link {{ 'frontoffice.users.' in activeRoute ? 'active' }}" href="{{ path('frontoffice.users.index') }}">
+                <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
+                <span class="menu-title">Users</span>
+            </a>
+        </div>
+    </div>
+</div>
