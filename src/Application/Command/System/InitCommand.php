@@ -32,13 +32,19 @@
             $user = $this->em->getRepository(User::class)->findOneBy(['email' => 'admin@pwsb.fr']);
             if(!$user){
                 $user = new User();
+                $user->setFirstname("administrator");
+                $user->setLastname("system");
                 $user->setEmail("admin@pwsb.fr");
                 $user->setPassword($this->passwordEncoder->encodePassword($user, "password"));
                 $user->setApiToken(implode('-', str_split(substr(strtolower(md5(microtime().rand(1000, 9999))), 0, 30), 6)));
-
-                $this->em->persist($user);
-                $this->em->flush();
+            } else {
+                $user->setFirstname("administrator");
+                $user->setLastname("system");
+                $user->setEmail("admin@pwsb.fr");
             }
+
+            $this->em->persist($user);
+            $this->em->flush();
 
             return Command::SUCCESS;
         }
