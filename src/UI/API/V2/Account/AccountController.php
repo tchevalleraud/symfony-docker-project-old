@@ -46,7 +46,14 @@
                 ];
             } elseif(is_a($this->getUser(), User::class)){
                 $user = [
-                    "email" => $this->getUser()->getEmail()
+                    "id"        => $this->getUser()->getId(),
+                    "avatar"    => $this->getUser()->getAvatar(),
+                    "lastname"  => $this->getUser()->getLastname(),
+                    "firstname" => $this->getUser()->getFirstname(),
+                    "email"     => $this->getUser()->getEmail(),
+                    "roles"     => $this->getUser()->getRoles(),
+                    "password"  => $this->getUser()->getPassword(),
+                    "apiToken"  => $this->getUser()->getApiToken()
                 ];
             }
             return new JsonResponse([
