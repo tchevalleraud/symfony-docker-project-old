@@ -27,6 +27,7 @@
             $user = new User();
             $user->setLastname($lastname);
             $user->setFirstname($firstname);
+            $user->setJobTitle("default job");
             $user->setEmail($email);
             $user->setPassword($this->passwordHasher->hashPassword($user, $password));
             $user->setApiToken(implode('-', str_split(substr(strtolower(md5(microtime().rand(1000, 9999))), 0, 30), 6)));
@@ -45,9 +46,9 @@
 
             $user = new User();
             $user->setAvatar("https://randomuser.me/api/portraits/".($person['gender'] == "male" ? "men" : "women")."/".rand(1, 60).".jpg");
-            //$user->setAvatar("https://avatars.dicebear.com/api/".$person['gender']."/".$person['lastname']."-".$person['firstname'].".svg");
             $user->setLastname($person['lastname']);
             $user->setFirstname($person['firstname']);
+            $user->setJobTitle("default job");
             $user->setEmail($person['email']);
             $user->setPassword($this->passwordHasher->hashPassword($user, $password));
             $user->setApiToken(implode('-', str_split(substr(strtolower(md5(microtime().rand(1000, 9999))), 0, 30), 6)));

@@ -42,6 +42,12 @@
         private $firstname;
 
         /**
+         * @ORM\Column(type="string", length=255)
+         * @OA\Property(type="string")
+         */
+        private $jobTitle;
+
+        /**
          * @ORM\Column(type="string", length=180, unique=true)
          * @OA\Property(type="string", format="email")
          * @Assert\Length(
@@ -55,10 +61,10 @@
         private $email;
 
         /**
-         * @ORM\Column(type="json")
-         * @OA\Property(type="array", @OA\Items(type="string", default="ROLE_USER"))
+         * @ORM\Column(type="string", length=2)
+         * @OA\Property(type="string")
          */
-        private $roles = [];
+        private $locale;
 
         /**
          * @ORM\Column(type="string")
@@ -77,6 +83,57 @@
          * )
          */
         private $apiToken;
+
+        /**
+         * @ORM\Column(type="json")
+         * @OA\Property(type="array", @OA\Items(type="string", default="ROLE_USER"))
+         */
+        private $roles = [];
+
+        /**
+         * @ORM\Column(type="datetime")
+         */
+        private $dateCreated;
+
+        /**
+         * @ORM\Column(type="datetime")
+         */
+        private $dateStarted;
+
+        /**
+         * @ORM\Column(type="datetime", nullable=true)
+         */
+        private $dateEnded;
+
+        /**
+         * @ORM\Column(type="datetime", nullable=true)
+         */
+        private $dateLastActivity;
+
+        /**
+         * @ORM\Column(type="boolean")
+         */
+        private $locked;
+
+        /**
+         * @ORM\Column(type="boolean")
+         */
+        private $enabled;
+
+        /**
+         * @ORM\Column(type="boolean")
+         */
+        private $deleted;
+
+        public function __construct(){
+            $this->locale       = "en";
+            $this->apiToken     = implode('-', str_split(substr(strtolower(md5(microtime().rand(1000, 9999))), 0, 30), 6));
+            $this->dateCreated  = new \DateTime();
+            $this->dateStarted  = new \DateTime();
+            $this->locked       = false;
+            $this->enabled      = true;
+            $this->deleted      = false;
+        }
 
         public function __toString() {
             return $this->getId();
@@ -113,6 +170,15 @@
             return $this;
         }
 
+        public function getJobTitle() {
+            return $this->jobTitle;
+        }
+
+        public function setJobTitle($jobTitle): self {
+            $this->jobTitle = $jobTitle;
+            return $this;
+        }
+
         public function getEmail(): ?string {
             return $this->email;
         }
@@ -122,14 +188,12 @@
             return $this;
         }
 
-        public function getRoles(): array {
-            $roles = $this->roles;
-            $roles[] = 'ROLE_USER';
-            return array_unique($roles);
+        public function getLocale(): string {
+            return $this->locale;
         }
 
-        public function setRoles(array $roles): self {
-            $this->roles = $roles;
+        public function setLocale(string $locale): self {
+            $this->locale = $locale;
             return $this;
         }
 
@@ -148,6 +212,90 @@
 
         public function setApiToken(string $apiToken): self {
             $this->apiToken = $apiToken;
+            return $this;
+        }
+
+        public function getRoles(): array {
+            $roles = $this->roles;
+            $roles[] = 'ROLE_USER';
+            return array_unique($roles);
+        }
+
+        public function addRole(string $role): self {
+            $this->roles[] = $role;
+            return $this;
+        }
+
+        public function removeRole(string $role): self {
+            $this->roles = array_diff($this->roles, [$role]);
+            return $this;
+        }
+
+        public function setRoles(array $roles): self {
+            $this->roles = $roles;
+            return $this;
+        }
+
+        public function getDateCreated(): \DateTime {
+            return $this->dateCreated;
+        }
+
+        public function setDateCreated(\DateTime $dateCreated): self {
+            $this->dateCreated = $dateCreated;
+            return $this;
+        }
+
+        public function getDateStarted(): \DateTime {
+            return $this->dateStarted;
+        }
+
+        public function setDateStarted(\DateTime $dateStarted): self {
+            $this->dateStarted = $dateStarted;
+            return $this;
+        }
+
+        public function getDateEnded() {
+            return $this->dateEnded;
+        }
+
+        public function setDateEnded($dateEnded): self {
+            $this->dateEnded = $dateEnded;
+            return $this;
+        }
+
+        public function getDateLastActivity() {
+            return $this->dateLastActivity;
+        }
+
+        public function setDateLastActivity($dateLastActivity): self {
+            $this->dateLastActivity = $dateLastActivity;
+            return $this;
+        }
+
+        public function isLocked(): bool {
+            return $this->locked;
+        }
+
+        public function setLocked(bool $locked): self {
+            $this->locked = $locked;
+            return $this;
+        }
+
+        public function isEnabled(): bool {
+            return $this->enabled;
+        }
+
+        public function setEnabled(bool $enabled): self {
+            $this->enabled = $enabled;
+            return $this;
+        }
+
+        public function isDeleted(): bool {
+            return $this->deleted;
+        }
+
+        public function setDeleted(bool $deleted): self {
+            $this->deleted = $deleted;
             return $this;
         }
 
@@ -170,7 +318,7 @@
         }
 
         public function getInitial(){
-            return $this->firstname[0].$this->lastname[0];
+            return $this->lastname[0].$this->firstname[0];
         }
 
         public function getFullName(){

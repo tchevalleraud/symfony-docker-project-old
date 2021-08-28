@@ -2,10 +2,12 @@
     namespace App\UI\FrontOffice\UserManagement;
 
     use App\Application\Annotation\Breadcrumb\Breadcrumb;
+    use App\Application\Services\AWSS3Service;
     use App\Domain\_mysql\System\Entity\User;
     use App\Domain\_mysql\System\Froms\UserSearch;
     use App\Domain\_mysql\System\Repository\UserRepository;
-    use App\Infrastructure\Forms\FrontOffice\User\SearchForm;
+    use App\Infrastructure\Forms\FrontOffice\User\NewForm as NewUserForm;
+    use App\Infrastructure\Forms\FrontOffice\User\SearchForm as SearchUserForm;
     use Knp\Component\Pager\PaginatorInterface;
     use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
     use Symfony\Component\HttpFoundation\Request;
@@ -33,7 +35,7 @@
         public function index(Request $request, UserRepository $userRepository, PaginatorInterface $paginator){
             $search = new UserSearch();
 
-            $form['search'] = $this->createForm(SearchForm::class, $search)->handleRequest($request);
+            $form['search'] = $this->createForm(SearchUserForm::class, $search)->handleRequest($request);
 
             $users = $paginator->paginate($userRepository->findSearch($search), $request->query->getInt('page', 1), $search->getLimit());
 
@@ -48,10 +50,29 @@
 
         /**
          * @Breadcrumb("new")
-         * @Route("/new.html", name="new", methods={"GET"})
+         * @Route("/new.html", name="new", methods={"GET", "POST"})
          */
-        public function new(Request $request){
-            return $this->render("FrontOffice/User/new.html.twig");
+        public function new(Request $request, AWSS3Service $AWSS3){
+            $user = new User();
+
+            $form['new'] = $this->createForm(NewUserForm::class, $user)->handleRequest($request);
+
+            if($form['new']->isSubmitted() && $form['new']->isValid()){
+                $avatar = $form['new']->get('avatar')->getData();
+                if($avatar) $user->setAvatar($AWSS3->putObjectUpload('user', $avatar));
+
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($user);
+                $em->flush();
+
+                return $this->redirectToRoute('frontoffice.users.index');
+            }
+
+            return $this->render("FrontOffice/User/new.html.twig", [
+                'form'  => [
+                    'new'   => $form['new']->createView()
+                ]
+            ]);
         }
 
         /**
@@ -94,7 +115,16 @@
          * @Breadcrumb("delete")
          * @Route("/{user}/delete.html", name="delete", methods={"GET"})
          */
-        public function delete(Request $request, User $user){
+        public function delete(Request $request, User $user, AWSS3Service $AWSS3){
+            if($this->isCsrfTokenValid('delete-'.$request->get('user'), $request->get('_token'))){
+                if($user->getAvatar()) $AWSS3->deleteObjectUpload('user', $user->getAvatar());
+
+                $em = $this->getDoctrine()->getManager();
+                $em->remove($user);
+                $em->flush();
+
+                return $this->redirectToRoute('frontoffice.users.index');
+            }
             return $this->render("FrontOffice/User/delete.html.twig", [
                 'user'  => $user
             ]);

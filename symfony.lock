@@ -1,6 +1,12 @@
 {
+    "aws/aws-sdk-php": {
+        "version": "3.191.6"
+    },
     "composer/package-versions-deprecated": {
         "version": "1.11.99.2"
+    },
+    "coraxster/flysystem-aws-s3-v3-minio": {
+        "version": "1.0.16"
     },
     "doctrine/annotations": {
         "version": "1.0",
@@ -109,6 +115,15 @@
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.5"
     },
+    "guzzlehttp/guzzle": {
+        "version": "7.3.0"
+    },
+    "guzzlehttp/promises": {
+        "version": "1.4.1"
+    },
+    "guzzlehttp/psr7": {
+        "version": "1.8.2"
+    },
     "knplabs/knp-components": {
         "version": "v3.1.0"
     },
@@ -118,8 +133,14 @@
     "laminas/laminas-code": {
         "version": "4.4.2"
     },
+    "league/flysystem": {
+        "version": "1.0.46"
+    },
     "monolog/monolog": {
         "version": "2.3.2"
+    },
+    "mtdowling/jmespath.php": {
+        "version": "2.6.1"
     },
     "myclabs/deep-copy": {
         "version": "1.10.2"
@@ -198,11 +219,20 @@
     "psr/event-dispatcher": {
         "version": "1.0.0"
     },
+    "psr/http-client": {
+        "version": "1.0.1"
+    },
+    "psr/http-message": {
+        "version": "1.0.1"
+    },
     "psr/link": {
         "version": "1.0.0"
     },
     "psr/log": {
         "version": "1.1.4"
+    },
+    "ralouphie/getallheaders": {
+        "version": "3.0.3"
     },
     "sebastian/cli-parser": {
         "version": "1.0.1"

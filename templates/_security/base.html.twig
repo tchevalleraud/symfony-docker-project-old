@@ -5,30 +5,37 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{% block title %}{{ APP_NAME }}{% endblock %}</title>
 
-        <link rel="shortcut icon" href="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.freebiesupply.com%2Flogos%2Flarge%2F2x%2Fsymfony-logo-png-transparent.png&f=1&nofb=1">
+        <link rel="shortcut icon" href="{{ asset('assets/metronic/media/logos/favicon.ico') }}" />
+
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
 
         {% block stylesheets %}
-            <link href="{{ asset('assets/css/libs/bootstrap/bootstrap.css') }}" rel="stylesheet">
-            <style>
-                .bd-placeholder-img {
-                    font-size: 1.125rem;
-                    text-anchor: middle;
-                    -webkit-user-select: none;
-                    -moz-user-select: none;
-                    user-select: none;
-                }
-                @media (min-width: 768px) {
-                    .bd-placeholder-img-lg {
-                        font-size: 3.5rem;
-                    }
-                }
-            </style>
-            <link href="{{ asset('assets/css/signin.css') }}" rel="stylesheet">
+            <link href="{{ asset('assets/metronic/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
+            <link href="{{ asset('assets/metronic/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
         {% endblock %}
     </head>
     <body class="text-center">
-        <main class="form-signin">
-            {% block body '' %}
-        </main>
+        <div class="d-flex flex-column flex-root">
+            <div class="d-flex flex-column flex-column-fluid bgi-position-y-bottom position-x-center bgi-no-repeat bgi-size-contain bgi-attachment-fixed" style="background-image: url({{ asset('assets/metronic/media/illustrations/development-hd.png') }})">
+                <div class="d-flex flex-center flex-column flex-column-fluid p-10 pb-lg-20">
+                    <a href="{{ path('root') }}" class="mb-12">
+                        <img alt="Logo" src="{{ asset('assets/metronic/media/logos/logo-2-dark.svg') }}" class="h-45px" />
+                    </a>
+                    <div class="w-lg-500px bg-body rounded shadow-sm p-10 p-lg-15 mx-auto">
+                        {% block body '' %}
+                    </div>
+                </div>
+                <div class="d-flex flex-center flex-column-auto p-10">
+                    <div class="d-flex align-items-center fw-bold fs-6">
+                        <a href="#" class="text-muted text-hover-primary px-2" target="_blank">Support</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% block javascripts %}
+            <script src="{{ asset('assets/metronic/plugins/global/plugins.bundle.js') }}"></script>
+            <script src="{{ asset('assets/metronic/js/scripts.bundle.js') }}"></script>
+        {% endblock %}
     </body>
 </html>

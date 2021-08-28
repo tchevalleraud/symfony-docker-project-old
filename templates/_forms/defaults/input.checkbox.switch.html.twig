@@ -1,0 +1,17 @@
+<div class="mb-5 fv-row fv-plugins-icon-container">
+    <div class="form-check form-switch form-check-custom form-check-solid">
+        {{ form_widget(form, {'attr': {'class': "form-check-input" ~ (not form.vars.valid ? 'is-invalid' : '') }}) }}
+        <label class="form-check-label" for="flexSwitchDefault">
+            {{ form.vars.label | capitalize }}
+            {% if form.vars.required == "required" %}
+                <span class="text-danger">*</span>
+            {% endif %}
+        </label>
+    </div>
+    {% if form.vars.help %}<div class="form-text">{{ form.vars.help | capitalize }}</div>{% endif %}
+    {% if not form.vars.valid %}
+        {% for e in form.vars.errors %}
+            <span class="form-text text-danger">{{ e.message }}</span>
+        {% endfor %}
+    {% endif %}
+</div>

@@ -1,0 +1,16 @@
+<div class="mb-10 fv-row fv-plugins-icon-container">
+    <label class="form-label mb-3">
+        {{ form.vars.label | capitalize }}
+        {% if form.vars.required == "required" %}
+            <span class="text-danger">*</span>
+        {% endif %}
+    </label>
+    {{ form_widget(form, {'attr': {'class': "form-control form-control-lg form-control-solid" ~ (not form.vars.valid ? 'is-invalid' : ''), 'placeholder': form.vars.label | trans([], 'form') | capitalize }}) }}
+    {% if form.vars.help %}<div class="form-text">{{ form.vars.help | capitalize }}</div>{% endif %}
+    <div class="fv-plugins-message-container invalid-feedback"></div>
+    {% if not form.vars.valid %}
+        {% for e in form.vars.errors %}
+            <span class="form-text text-danger">{{ e.message }}</span>
+        {% endfor %}
+    {% endif %}
+</div>

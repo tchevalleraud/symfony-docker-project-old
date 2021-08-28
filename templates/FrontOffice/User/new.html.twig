@@ -14,8 +14,8 @@
 
 {% block body %}
     <div class="post d-flex flex-column-fluid">
-        <div id="kt_content_container" class="container">
-            <div class="stepper stepper-pills stepper-column d-flex flex-column flex-xl-row flex-row-fluid" id="kt_create_account_stepper" data-kt-stepper="true">
+        <div class="container">
+            <div class="stepper stepper-pills stepper-column d-flex flex-column flex-xl-row flex-row-fluid" id="frontoffice_users_new_stepper">
                 <div class="d-flex justify-content-center bg-body rounded justify-content-xl-start flex-row-auto w-100 w-xl-300px w-xxl-400px me-9">
                     <div class="px-6 px-lg-10 px-xxl-15 py-20">
                         <div class="stepper-nav">
@@ -27,7 +27,7 @@
                                 </div>
                                 <div class="stepper-label">
                                     <h3 class="stepper-title">Account Settings</h3>
-                                    <div class="stepper-desc fw-bold">Setup Your Account Settings</div>
+                                    <div class="stepper-desc fw-bold">TODO</div>
                                 </div>
                             </div>
                             <div class="stepper-item" data-kt-stepper-element="nav">
@@ -37,8 +37,8 @@
                                     <span class="stepper-number">2</span>
                                 </div>
                                 <div class="stepper-label">
-                                    <h3 class="stepper-title">Business Info</h3>
-                                    <div class="stepper-desc fw-bold">Your Business Related Info</div>
+                                    <h3 class="stepper-title">Personal information</h3>
+                                    <div class="stepper-desc fw-bold">TODO</div>
                                 </div>
                             </div>
                             <div class="stepper-item" data-kt-stepper-element="nav">
@@ -48,240 +48,91 @@
                                     <span class="stepper-number">3</span>
                                 </div>
                                 <div class="stepper-label">
-                                    <h3 class="stepper-title">Completed</h3>
-                                    <div class="stepper-desc fw-bold">Woah, we are here</div>
+                                    <h3 class="stepper-title">Account security</h3>
+                                    <div class="stepper-desc fw-bold">TODO</div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="d-flex flex-row-fluid flex-center bg-body rounded">
-                    <form class="py-20 w-100 w-xl-700px px-9 fv-plugins-bootstrap5 fv-plugins-framework" novalidate="novalidate" id="kt_create_account_form">
-                        <div class="current" data-kt-stepper-element="content">
-                            <div class="w-100">
+                    {{ form_start(form.new, {'attr': {'id': 'frontoffice_users_new_form', 'class': 'py-20 w-100 w-xl-700px px-9 fv-plugins-bootstrap5 fv-plugins-framework', 'novalidate': 'novalidate'}}) }}
+                        <div class="mb-5">
+                            <div class="flex-column current" data-kt-stepper-element="content">
                                 <div class="pb-10 pb-lg-15">
                                     <h2 class="fw-bolder text-dark">Account settings</h2>
                                     <div class="text-muted fw-bold fs-6">
-                                        If you need more info, please check out <a href="#" class="link-primary fw-bolder">Help Page</a>.*
+                                        If you need more info, please check out <a href="#" class="link-primary fw-bolder">Help Page</a>.
                                     </div>
                                 </div>
-                                <div class="mb-10 fv-row fv-plugins-icon-container">
-                                    <label class="form-label mb-3">Team Account Name</label>
-                                    <input type="text" class="form-control form-control-lg form-control-solid" name="account_name" placeholder="" value="">
-                                    <div class="fv-plugins-message-container invalid-feedback"></div>
-                                </div>
-                                <div class="mb-0 fv-row fv-plugins-icon-container">
-                                    <label class="d-flex align-items-center form-label mb-5">Select Account Plan
-                                        <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="" data-bs-original-title="Monthly billing will be based on your account plan" aria-label="Monthly billing will be based on your account plan"></i>
-                                    </label>
-                                    <div class="mb-0">
-                                        <label class="d-flex flex-stack mb-5 cursor-pointer">
-                                            <span class="d-flex align-items-center me-2">
-                                                <span class="symbol symbol-50px me-6">
-                                                    <span class="symbol-label">
-                                                        <span class="svg-icon svg-icon-1 svg-icon-gray-600">{{ include('_svg/duotone/Interface/Bank.svg') }}</span>
-                                                    </span>
-                                                </span>
-                                                <span class="d-flex flex-column">
-                                                    <span class="fw-bolder text-gray-800 text-hover-primary fs-5">Company Account</span>
-                                                    <span class="fs-6 fw-bold text-muted">Use images to enhance your post flow</span>
-                                                </span>
-                                            </span>
-                                            <span class="form-check form-check-custom form-check-solid">
-                                                <input class="form-check-input" type="radio" name="account_plan" value="1">
-                                            </span>
-                                        </label>
-                                        <label class="d-flex flex-stack mb-5 cursor-pointer">
-                                            <span class="d-flex align-items-center me-2">
-                                                <span class="symbol symbol-50px me-6">
-                                                    <span class="symbol-label">
-                                                        <span class="svg-icon svg-icon-1 svg-icon-gray-600">{{ include('_svg/duotone/Interface/Doughnut.svg') }}</span>
-                                                    </span>
-                                                </span>
-                                                <span class="d-flex flex-column">
-                                                    <span class="fw-bolder text-gray-800 text-hover-primary fs-5">Developer Account</span>
-                                                    <span class="fs-6 fw-bold text-muted">Use images to your post time</span>
-                                                </span>
-                                            </span>
-                                            <span class="form-check form-check-custom form-check-solid">
-                                                <input class="form-check-input" type="radio" checked="checked" name="account_plan" value="2">
-                                            </span>
-                                        </label>
-                                        <label class="d-flex flex-stack mb-0 cursor-pointer">
-                                            <span class="d-flex align-items-center me-2">
-                                                <span class="symbol symbol-50px me-6">
-                                                    <span class="symbol-label">
-                                                        <span class="svg-icon svg-icon-1 svg-icon-gray-600">{{ include('_svg/duotone/Interface/Line-03-Down.svg') }}</span>
-                                                    </span>
-                                                </span>
-                                                <span class="d-flex flex-column">
-                                                    <span class="fw-bolder text-gray-800 text-hover-primary fs-5">Testing Account</span>
-                                                    <span class="fs-6 fw-bold text-muted">Use images to enhance time travel rivers</span>
-                                                </span>
-                                            </span>
-                                            <span class="form-check form-check-custom form-check-solid">
-                                                <input class="form-check-input" type="radio" name="account_plan" value="3">
-                                            </span>
-                                        </label>
-                                    </div>
-                                    <div class="fv-plugins-message-container invalid-feedback"></div>
-                                </div>
+                                {% include "_forms/defaults/input.text.html.twig" with { 'form' : form.new.email } %}
+                                {% include "_forms/defaults/input.select.html.twig" with { 'form' : form.new.locale } %}
                             </div>
-                        </div>
-                        <div data-kt-stepper-element="content">
-                            <div class="w-100">
-                                <div class="pb-10 pb-lg-12">
-                                    <h2 class="fw-bolder text-dark">Business info</h2>
+                            <div class="flex-column" data-kt-stepper-element="content">
+                                <div class="pb-10 pb-lg-15">
+                                    <h2 class="fw-bolder text-dark">Personal information</h2>
                                     <div class="text-muted fw-bold fs-6">
-                                        If you need more info, please check out
-                                        <a href="#" class="link-primary fw-bolder">Help Page</a>.
+                                        If you need more info, please check out <a href="#" class="link-primary fw-bolder">Help Page</a>.
                                     </div>
                                 </div>
-                                <div class="fv-row mb-10 fv-plugins-icon-container">
-                                    <label class="form-label required">Business Name</label>
-                                    <input name="business_name" class="form-control form-control-lg form-control-solid" value="Keenthemes Inc.">
-                                    <div class="fv-plugins-message-container invalid-feedback"></div>
-                                </div>
-                                <div class="fv-row mb-10 fv-plugins-icon-container">
-                                    <label class="d-flex align-items-center form-label">
-                                        <span class="required">Shortened Descriptor</span>
-                                        <i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-html="true" data-bs-content="<div class='p-4 rounded bg-light'> <div class='d-flex flex-stack text-muted mb-4'> <i class='fas fa-university fs-3 me-3'></i> <div class='fw-bold'>INCBANK **** 1245 STATEMENT</div> </div> <div class='d-flex flex-stack fw-bold text-gray-600'> <div>Amount</div> <div>Transaction</div> </div> <div class='separator separator-dashed my-2'></div> <div class='d-flex flex-stack text-dark fw-bolder mb-2'> <div>USD345.00</div> <div>KEENTHEMES*</div> </div> <div class='d-flex flex-stack text-muted mb-2'> <div>USD75.00</div> <div>Hosting fee</div> </div> <div class='d-flex flex-stack text-muted'> <div>USD3,950.00</div> <div>Payrol</div> </div> </div>" data-bs-original-title="" title=""></i>
-                                    </label>
-                                    <input name="business_descriptor" class="form-control form-control-lg form-control-solid" value="KEENTHEMES">
-                                    <div class="form-text">Customers will see this shortened version of your statement descriptor</div>
-                                    <div class="fv-plugins-message-container invalid-feedback"></div>
-                                </div>
-                                <div class="fv-row mb-0 fv-plugins-icon-container">
-                                    <label class="fs-6 fw-bold form-label required">Contact Email</label>
-                                    <input name="business_email" class="form-control form-control-lg form-control-solid" value="corp@support.com">
-                                    <div class="fv-plugins-message-container invalid-feedback"></div>
-                                </div>
+                                {% include "_forms/defaults/input.file.avatar.html.twig" with { 'form' : form.new.avatar } %}
+                                {% include "_forms/defaults/input.text.html.twig" with { 'form' : form.new.lastname } %}
+                                {% include "_forms/defaults/input.text.html.twig" with { 'form' : form.new.firstname } %}
+                                {% include "_forms/defaults/input.text.html.twig" with { 'form' : form.new.jobTitle } %}
                             </div>
-                        </div>
-                        <div data-kt-stepper-element="content">
-                            <div class="w-100">
-                                <div class="pb-8 pb-lg-10">
-                                    <h2 class="fw-bolder text-dark">Your Are Done!</h2>
+                            <div class="flex-column" data-kt-stepper-element="content">
+                                <div class="pb-10 pb-lg-15">
+                                    <h2 class="fw-bolder text-dark">Account security</h2>
                                     <div class="text-muted fw-bold fs-6">
-                                        If you need more info, please
-                                        <a href="#" class="link-primary fw-bolder">Sign In</a>.
+                                        If you need more info, please check out <a href="#" class="link-primary fw-bolder">Help Page</a>.
                                     </div>
                                 </div>
-                                <div class="mb-0">
-                                    <div class="fs-6 text-gray-600 mb-5">Writing headlines for blog posts is as much an art as it is a science and probably warrants its own post, but for all advise is with what works for your great &amp; amazing audience.</div>
-                                    <div class="notice d-flex bg-light-warning rounded border-warning border border-dashed p-6">
-                                        <span class="svg-icon svg-icon-2tx svg-icon-warning me-4">{{ include('_svg/duotone/Code/Warning-1-circle.svg') }}</span>
-                                        <div class="d-flex flex-stack flex-grow-1">
-                                            <div class="fw-bold">
-                                                <h4 class="text-gray-900 fw-bolder">We need your attention!</h4>
-                                                <div class="fs-6 text-gray-700">
-                                                    To start using great tools, please, please
-                                                    <a href="#" class="fw-bolder">Create Team Platform</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                {% include "_forms/defaults/input.password.html.twig" with { 'form' : form.new.password.first, 'meter': true } %}
+                                {% include "_forms/defaults/input.password.html.twig" with { 'form' : form.new.password.second } %}
+                                <div class="separator separator-dashed my-5"></div>
+                                {% include "_forms/defaults/input.text.html.twig" with { 'form' : form.new.dateStarted } %}
+                                <div class="separator separator-dashed my-5"></div>
+                                {% include "_forms/defaults/input.checkbox.switch.html.twig" with { 'form': form.new.locked } %}
+                                {% include "_forms/defaults/input.checkbox.switch.html.twig" with { 'form': form.new.enabled } %}
                             </div>
                         </div>
-                        <div class="d-flex flex-stack pt-10">
-                            <div class="mr-2">
-                                <button type="button" class="btn btn-lg btn-light-primary me-3" data-kt-stepper-action="previous">
-                                    <!--begin::Svg Icon | path: icons/duotone/Navigation/Left-2.svg-->
-                                    <span class="svg-icon svg-icon-4 me-1">
-														<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-															<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-																<polygon points="0 0 24 0 24 24 0 24"></polygon>
-																<rect fill="#000000" opacity="0.3" transform="translate(15.000000, 12.000000) scale(-1, 1) rotate(-90.000000) translate(-15.000000, -12.000000)" x="14" y="7" width="2" height="10" rx="1"></rect>
-																<path d="M3.7071045,15.7071045 C3.3165802,16.0976288 2.68341522,16.0976288 2.29289093,15.7071045 C1.90236664,15.3165802 1.90236664,14.6834152 2.29289093,14.2928909 L8.29289093,8.29289093 C8.67146987,7.914312 9.28105631,7.90106637 9.67572234,8.26284357 L15.6757223,13.7628436 C16.0828413,14.136036 16.1103443,14.7686034 15.7371519,15.1757223 C15.3639594,15.5828413 14.7313921,15.6103443 14.3242731,15.2371519 L9.03007346,10.3841355 L3.7071045,15.7071045 Z" fill="#000000" fill-rule="nonzero" transform="translate(9.000001, 11.999997) scale(-1, -1) rotate(90.000000) translate(-9.000001, -11.999997)"></path>
-															</g>
-														</svg>
-													</span>
-                                    <!--end::Svg Icon-->Back</button>
+                        <div class="d-flex flex-stack">
+                            <div class="me-2">
+                                <button type="button" class="btn btn-light btn-active-light-primary" data-kt-stepper-action="previous">Back</button>
                             </div>
-                            <!--end::Wrapper-->
-                            <!--begin::Wrapper-->
                             <div>
-                                <button type="button" class="btn btn-lg btn-primary me-3" data-kt-stepper-action="submit">
-														<span class="indicator-label">Submit
-                                                            <!--begin::Svg Icon | path: icons/duotone/Navigation/Right-2.svg-->
-														<span class="svg-icon svg-icon-3 ms-2 me-0">
-															<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-																<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-																	<polygon points="0 0 24 0 24 24 0 24"></polygon>
-																	<rect fill="#000000" opacity="0.5" transform="translate(8.500000, 12.000000) rotate(-90.000000) translate(-8.500000, -12.000000)" x="7.5" y="7.5" width="2" height="9" rx="1"></rect>
-																	<path d="M9.70710318,15.7071045 C9.31657888,16.0976288 8.68341391,16.0976288 8.29288961,15.7071045 C7.90236532,15.3165802 7.90236532,14.6834152 8.29288961,14.2928909 L14.2928896,8.29289093 C14.6714686,7.914312 15.281055,7.90106637 15.675721,8.26284357 L21.675721,13.7628436 C22.08284,14.136036 22.1103429,14.7686034 21.7371505,15.1757223 C21.3639581,15.5828413 20.7313908,15.6103443 20.3242718,15.2371519 L15.0300721,10.3841355 L9.70710318,15.7071045 Z" fill="#000000" fill-rule="nonzero" transform="translate(14.999999, 11.999997) scale(1, -1) rotate(90.000000) translate(-14.999999, -11.999997)"></path>
-																</g>
-															</svg>
-														</span>
-                                                            <!--end::Svg Icon--></span>
-                                    <span class="indicator-progress">Please wait...
-														<span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                                <button type="button" class="btn btn-primary" data-kt-stepper-action="submit">
+                                    <span class="indicator-label">Submit</span>
+                                    <span class="indicator-progress">Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                                 </button>
-                                <button type="button" class="btn btn-lg btn-primary" data-kt-stepper-action="next">Continue
-                                    <!--begin::Svg Icon | path: icons/duotone/Navigation/Right-2.svg-->
-                                    <span class="svg-icon svg-icon-4 ms-1 me-0">
-														<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-															<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-																<polygon points="0 0 24 0 24 24 0 24"></polygon>
-																<rect fill="#000000" opacity="0.5" transform="translate(8.500000, 12.000000) rotate(-90.000000) translate(-8.500000, -12.000000)" x="7.5" y="7.5" width="2" height="9" rx="1"></rect>
-																<path d="M9.70710318,15.7071045 C9.31657888,16.0976288 8.68341391,16.0976288 8.29288961,15.7071045 C7.90236532,15.3165802 7.90236532,14.6834152 8.29288961,14.2928909 L14.2928896,8.29289093 C14.6714686,7.914312 15.281055,7.90106637 15.675721,8.26284357 L21.675721,13.7628436 C22.08284,14.136036 22.1103429,14.7686034 21.7371505,15.1757223 C21.3639581,15.5828413 20.7313908,15.6103443 20.3242718,15.2371519 L15.0300721,10.3841355 L9.70710318,15.7071045 Z" fill="#000000" fill-rule="nonzero" transform="translate(14.999999, 11.999997) scale(1, -1) rotate(90.000000) translate(-14.999999, -11.999997)"></path>
-															</g>
-														</svg>
-													</span>
-                                    <!--end::Svg Icon--></button>
+                                <button type="button" class="btn btn-primary" data-kt-stepper-action="next">Continue</button>
                             </div>
-                            <!--end::Wrapper-->
                         </div>
-                        <!--end::Actions-->
-                        <div></div><div></div><div></div><div></div></form>
-                    <!--end::Form-->
+                    {{ form_end(form.new) }}
                 </div>
-                <!--end::Content-->
             </div>
-            <!--end::Stepper-->
         </div>
-        <!--end::Container-->
     </div>
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
     <script type="application/javascript">
-        "use strict";
-        var KTCreateAccount = function () {
-            var e, t, i, o, r, s, a = [];
+        var FrontOfficeUsersNew = function(){
             return {
-                init: function () {
-                    (t = document.querySelector("#kt_modal_create_account")) && (e = new bootstrap.Modal(t)), (i = document.querySelector("#kt_create_account_stepper")) && (o = i.querySelector("#kt_create_account_form"), r = i.querySelector('[data-kt-stepper-action="submit"]'), (s = new KTStepper(i)).on("kt.stepper.next", (function (e) {
-                        var t = a[e.getCurrentStepIndex() - 1];
-                        t ? t.validate().then((function (t) {
-                            "Valid" == t ? (e.goNext(), KTUtil.scrollTop()) : null
-                        })) : (e.goNext(), KTUtil.scrollTop())
-                    })), s.on("kt.stepper.previous", (function (e) {
-                        e.goPrevious(), KTUtil.scrollTop()
-                    })), a.push(FormValidation.formValidation(o, {
+                step: function(){
+                    var stepper = document.querySelector("#frontoffice_users_new_stepper");
+                    var stepperForm = stepper.querySelector('#frontoffice_users_new_form');
+                    var stepperSubmit = stepper.querySelector('[data-kt-stepper-action="submit"]');
+                    var s = new KTStepper(stepper);
+                    var a = [];
+
+                    a.push(FormValidation.formValidation(stepperForm, {
                         fields: {
-                            account_name: {validators: {notEmpty: {message: "Account name is required"}}},
-                            account_plan: {validators: {notEmpty: {message: "Account plan is required"}}}
-                        },
-                        plugins: {
-                            trigger: new FormValidation.plugins.Trigger,
-                            bootstrap: new FormValidation.plugins.Bootstrap5({
-                                rowSelector: ".fv-row",
-                                eleInvalidClass: "",
-                                eleValidClass: ""
-                            })
-                        }
-                    })), a.push(FormValidation.formValidation(o, {
-                        fields: {
-                            business_name: {validators: {notEmpty: {message: "Busines name is required"}}},
-                            business_descriptor: {validators: {notEmpty: {message: "Busines descriptor is required"}}},
-                            business_description: {validators: {notEmpty: {message: "Busines description is required"}}},
-                            business_email: {
+                            "new_form[email]": {
                                 validators: {
-                                    notEmpty: {message: "Busines email is required"},
-                                    emailAddress: {message: "The value is not a valid email address"}
+                                    emailAddress: {message: "the value is not a valid email address"},
+                                    notEmpty: {message: "your email is required"}
                                 }
                             }
                         },
@@ -293,24 +144,44 @@
                                 eleValidClass: ""
                             })
                         }
-                    })), r.addEventListener("click", (function (t) {
-                        t.preventDefault(), r.disabled = !0, r.setAttribute("data-kt-indicator", "on"), setTimeout((function () {
-                            r.removeAttribute("data-kt-indicator"), r.disabled = !1, Swal.fire({
-                                text: "Form has been successfully submitted!",
-                                icon: "success",
-                                buttonsStyling: !1,
-                                confirmButtonText: "Ok, got it!",
-                                customClass: {confirmButton: "btn btn-primary"}
-                            }).then((function (t) {
-                                t.isConfirmed && e && e.hide()
-                            }))
-                        }), 2e3)
-                    })))
+                    }));
+                    a.push(FormValidation.formValidation(stepperForm, {
+                        fields: {
+                            "new_form[lastname]": {validators: {notEmpty: {message: "your lastname is required"}}},
+                            "new_form[firstname]": {validators: {notEmpty: {message: "your firstname is required"}}},
+                            "new_form[jobTitle]": {validators: {notEmpty: {message: "your job title is required"}}}
+                        },
+                        plugins: {
+                            trigger: new FormValidation.plugins.Trigger,
+                            bootstrap: new FormValidation.plugins.Bootstrap5({
+                                rowSelector: ".fv-row",
+                                eleInvalidClass: "",
+                                eleValidClass: ""
+                            })
+                        }
+                    }));
+
+                    s.on("kt.stepper.next", function(e){
+                        var t = a[e.getCurrentStepIndex() - 1];
+                        t ? t.validate().then(function(t){
+                            "Valid" == t ? (e.goNext(), KTUtil.scrollTop()) : null
+                        }) : (e.goNext(), KTUtil.scrollTop());
+                    });
+
+                    s.on("kt.stepper.previous", function(e){
+                        e.goPrevious(), KTUtil.scrollTop();
+                    });
+
+                    stepperSubmit.addEventListener("click", (function (t) {
+                        stepperSubmit.setAttribute("data-kt-indicator", "on");
+                        stepperSubmit.disabled = !0;
+                        stepperForm.submit();
+                    }));
                 }
             }
         }();
-        KTUtil.onDOMContentLoaded((function () {
-            KTCreateAccount.init()
-        }));
+        KTUtil.onDOMContentLoaded(function(){
+            FrontOfficeUsersNew.step();
+        })
     </script>
 {% endblock %}

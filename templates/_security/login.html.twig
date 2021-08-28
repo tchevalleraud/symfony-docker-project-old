@@ -3,24 +3,53 @@
 {% block title %}Sign in - {{ parent() }}{% endblock %}
 
 {% block body %}
-    <form method="post">
-        <img class="mb-4" src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.freebiesupply.com%2Flogos%2Flarge%2F2x%2Fsymfony-logo-png-transparent.png&f=1&nofb=1" alt="" width="72" height="72">
-        <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
-        {% if error %}
-            <div class="text-center mb-10">
-                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-            </div>
-        {% endif %}
-        <div class="form-floating">
-            <input type="email" class="form-control" id="username" name="email" autocomplete="off" value="{{ last_username }}" placeholder="username" required autofocus>
-            <label for="floatingInput">Email address</label>
+    <form class="form w-100" novalidate="novalidate" id="security_login_form" method="post">
+        <div class="text-center mb-10">
+            <h1 class="text-dark mb-3">Sign In to Metronic</h1>
         </div>
-        <div class="form-floating">
-            <input type="password" class="form-control" id="password" name="password" placeholder="Password" required autocomplete="off">
-            <label for="floatingPassword">Password</label>
+        {% if error %}
+            <div class="alert alert-danger mb-10">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+        <div class="fv-row mb-10">
+            <div class="d-flex flex-stack mb-2">
+                <label class="form-label fw-bolder text-dark fs-6 mb-0">Email</label>
+            </div>
+            <input type="email" class="form-control form-control-lg form-control-solid" id="username" name="email" autocomplete="off" value="{{ last_username }}" placeholder="username" required autofocus>
+        </div>
+        <div class="fv-row mb-10">
+            <div class="d-flex flex-stack mb-2">
+                <label class="form-label fw-bolder text-dark fs-6 mb-0">Password</label>
+            </div>
+            <input type="password" class="form-control form-control-lg form-control-solid" id="password" name="password" placeholder="Password" required autocomplete="off">
         </div>
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-        <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
-        <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
+        <div class="text-center">
+            <button type="submit" id="security_login_submit" class="btn btn-lg btn-primary w-100 mb-5">
+                <span class="indicator-label">Continue</span>
+                <span class="indicator-progress">Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+            </button>
+        </div>
     </form>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="application/javascript">
+        var security_login_submit;
+        var SecurityLogin = function(){
+            return {
+                init: function(){
+                    security_login_submit = document.querySelector("#security_login_submit");
+                    security_login_submit.addEventListener("click", function (c){
+                        security_login_submit.setAttribute("data-kt-indicator", "on");
+                        security_login_submit.disabled = !0;
+                        document.querySelector("#security_login_form").submit();
+                    })
+                }
+            }
+        }();
+        KTUtil.onDOMContentLoaded(function(){
+            SecurityLogin.init();
+        })
+    </script>
 {% endblock %}

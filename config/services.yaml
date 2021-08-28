@@ -16,6 +16,12 @@ services:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
         arguments: ['@annotation_reader']
 
+    App\Application\Services\AWSS3Service:
+        arguments:
+            $endpoint: '%env(resolve:MINIO_ENDPOINT)%'
+            $key: '%env(resolve:MINIO_KEY)%'
+            $secret: '%env(resolve:MINIO_SECRET)%'
+
     App\Infrastructure\Profiler\PHPUnit\RequestProfiler:
         tags:
             - name: PHPUnit
