@@ -38,8 +38,15 @@ jobs:
           echo "APP_SECRET=\"${{ secrets.APP_SECRET }}\"" >> .env
           echo "DATABASE_LOCAL_URL=\"sqlite:///%kernel.project_dir%/var/local.db\"" >> .env
           echo "DATABASE_MYSQL_URL=\"mysql://root:${{ secrets.DATABASE_MYSQL_PASSWORD }}@database:3306/symfony-docker-project\"" >> .env
+          echo "MINIO_CONSOLE=\"http://console.s3.symfony-docker-project.prod.pwsb.fr/\"" >> .env
+          echo "MINIO_ENDPOINT=\"http://s3.symfony-docker-project.prod.pwsb.fr/\"" >> .env
+          echo "MINIO_KEY=minio" >> .env
+          echo "MINIO_SECRET=\"${{ secrets.MINIO_SECRET }}\"" >> .env
           rm -f ./docker/.password
           echo "DATABASE_MYSQL_PASSWORD=${{ secrets.DATABASE_MYSQL_PASSWORD }}" >> ./docker/.password
+          echo "MINIO_CONSOLE=\"http://console.s3.symfony-docker-project.prod.pwsb.fr/\"" >> ./docker/.password
+          echo "MINIO_KEY=minio" >> ./docker/.password
+          echo "MINIO_SECRET=\"${{ secrets.MINIO_SECRET }}\"" >> ./docker/.password
   build:
     runs-on: [production]
     needs: [init]

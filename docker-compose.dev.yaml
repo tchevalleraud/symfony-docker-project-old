@@ -11,8 +11,6 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${DATABASE_MYSQL_PASSWORD}
     image: mysql
-    ports:
-      - "11003:3306"
     restart: always
     volumes:
       - database-data:/var/lib/mysql
@@ -53,9 +51,9 @@ services:
   s3server:
     command: server /data --console-address ":9001"
     environment:
-      MINIO_BROWSER_REDIRECT_URL: http://console.s3.symfony-docker-project.local.pwsb.fr/
-      MINIO_ROOT_USER: minio
-      MINIO_ROOT_PASSWORD: minio123
+      MINIO_BROWSER_REDIRECT_URL: ${MINIO_CONSOLE}
+      MINIO_ROOT_USER: ${MINIO_KEY}
+      MINIO_ROOT_PASSWORD: ${MINIO_SECRET}
     image: minio/minio
     ports:
       - "11004:9000"

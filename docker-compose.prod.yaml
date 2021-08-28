@@ -1,5 +1,12 @@
 version: "3.8"
 services:
+  adminer:
+    environment:
+      ADMINER_DESIGN: pepa-linha
+      ADMINER_DEFAULT_SERVER: database
+    image: adminer
+    links:
+      - database
   database:
     environment:
       MYSQL_ROOT_PASSWORD: ${DATABASE_MYSQL_PASSWORD}
@@ -10,7 +17,9 @@ services:
   nginx:
     image: nginx:alpine
     links:
+      - adminer
       - php
+      - s3server
       - swagger
     ports:
       - "10001:80"
@@ -39,15 +48,19 @@ services:
     restart: always
     volumes:
       - .:/var/www
-  phpmyadmin:
-    depends_on:
-      - database
+  s3server:
+    command: server /data --console-address ":9001"
     environment:
-      PMA_HOST: database
-    image: phpmyadmin
-    restart: always
+      MINIO_BROWSER_REDIRECT_URL: ${MINIO_CONSOLE}
+      MINIO_ROOT_USER: ${MINIO_KEY}
+      MINIO_ROOT_PASSWORD: ${MINIO_SECRET}
+    image: minio/minio
     ports:
-      - "10002:80"
+      - "11004:9000"
+      - "11005:9001"
+    restart: unless-stopped
+    volumes:
+      - s3server-data:/data
   swagger:
     environment:
       SWAGGER_JSON: /foo/swagger.json
@@ -56,3 +69,4 @@ services:
       - .:/foo
 volumes:
   database-data:
+  s3server-data:
