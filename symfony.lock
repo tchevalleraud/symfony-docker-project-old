@@ -2,6 +2,9 @@
     "aws/aws-sdk-php": {
         "version": "3.191.6"
     },
+    "christian-riesen/otp": {
+        "version": "2.7.0"
+    },
     "composer/package-versions-deprecated": {
         "version": "1.11.99.2"
     },
@@ -159,6 +162,12 @@
     },
     "nikic/php-parser": {
         "version": "v4.12.0"
+    },
+    "paragonie/constant_time_encoding": {
+        "version": "v2.4.0"
+    },
+    "paragonie/random_compat": {
+        "version": "v9.99.100"
     },
     "phar-io/manifest": {
         "version": "2.0.3"
@@ -540,6 +549,9 @@
     },
     "symfony/polyfill-mbstring": {
         "version": "v1.23.1"
+    },
+    "symfony/polyfill-php56": {
+        "version": "v1.20.0"
     },
     "symfony/polyfill-php73": {
         "version": "v1.23.0"

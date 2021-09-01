@@ -9,6 +9,7 @@
     use App\Infrastructure\Forms\FrontOffice\User\NewForm as NewUserForm;
     use App\Infrastructure\Forms\FrontOffice\User\SearchForm as SearchUserForm;
     use Knp\Component\Pager\PaginatorInterface;
+    use Otp\GoogleAuthenticator;
     use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
     use Symfony\Component\HttpFoundation\Request;
     use Symfony\Component\Routing\Annotation\Route;
@@ -148,8 +149,17 @@
                 return $this->redirectToRoute('frontoffice.users.edit.security', ['user' => $user]);
             }
 
+            if($user->getOtpCodeSecret() === null){
+                $secret = GoogleAuthenticator::generateRandom();
+                $qrcode = GoogleAuthenticator::getQrCodeUrl('totp', 'Symfony docker project '.$user->getEmail(), $secret);
+            }
+
             return $this->render("FrontOffice/User/edit.security.html.twig", [
-                'user'  => $user
+                'otp'   => [
+                    'qrcode'    => $qrcode,
+                    'secret'    => $secret
+                ],
+                'user'      => $user
             ]);
         }
 
