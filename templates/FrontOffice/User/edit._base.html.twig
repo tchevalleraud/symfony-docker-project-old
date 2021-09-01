@@ -135,9 +135,8 @@
                                 <span class="svg-icon svg-icon-4 me-1">{{ include('_svg/duotone/Interface/Arrow-Left-Square.svg') }}</span>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="{{ path('frontoffice.users.edit.overview', {'user': user}) }}" class="nav-link text-active-primary pb-4 mx-2 {{ 'frontoffice.users.edit.overview' in activeRoute ? 'active' }}">Overview</a>
-                        </li>
+                        <li class="nav-item"><a href="{{ path('frontoffice.users.edit.overview', {'user': user}) }}" class="nav-link text-active-primary pb-4 mx-2 {{ 'frontoffice.users.edit.overview' in activeRoute ? 'active' }}">Overview</a></li>
+                        <li class="nav-item"><a href="{{ path('frontoffice.users.edit.security', {'user': user}) }}" class="nav-link text-active-primary pb-4 mx-2 {{ 'frontoffice.users.edit.security' in activeRoute ? 'active' }}">Security</a></li>
                         <li class="nav-item ms-auto">
                             <a href="{{ path('frontoffice.users.delete', {'user': user}) }}" class="nav-link text-active-danger pb-4 mx-2 me-0 {{ 'frontoffice.users.delete' in activeRoute ? 'active' }}">Delete</a>
                         </li>

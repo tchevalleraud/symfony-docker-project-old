@@ -2,7 +2,10 @@
     namespace App\UI\FrontOffice;
 
     use App\Application\Annotation\Breadcrumb\Breadcrumb;
+    use App\Infrastructure\Message\Test\TestEmailMessage;
     use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+    use Symfony\Component\Messenger\MessageBusInterface;
+    use Symfony\Component\Messenger\Stamp\DelayStamp;
     use Symfony\Component\Routing\Annotation\Route;
 
     /**
@@ -37,6 +40,14 @@
          */
         public function index3(){
             return $this->render("FrontOffice/Dashboard/index3.html.twig");
+        }
+
+        /**
+         * @Route("-test-message.html", name="test.message", methods={"GET"})
+         */
+        public function testMessage(){
+            $this->dispatchMessage(new TestEmailMessage("tchevalleraud@gmail.com", "test", "ceci est un test"), [new DelayStamp(45000)]);
+            return $this->redirectToRoute("frontoffice.dashboard.v3");
         }
 
     }

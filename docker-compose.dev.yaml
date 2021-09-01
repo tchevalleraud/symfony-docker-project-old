@@ -14,6 +14,22 @@ services:
     restart: always
     volumes:
       - database-data:/var/lib/mysql
+  mail:
+    image: mailhog/mailhog
+    ports:
+      - "11006:8025"
+  messenger:
+    build:
+      context: ./docker/php
+      args:
+        USER_ID: ${USER_ID}
+        GROUP_ID: ${GROUP_ID}
+    command: ['php', 'bin/console', 'messenger:consume', 'priority_high', 'priority_normal', 'priority_low', '-vv']
+    depends_on:
+      - database
+    restart: unless-stopped
+    volumes:
+      - .:/var/www:delegated
   nginx:
     image: nginx:alpine
     links:
@@ -48,6 +64,15 @@ services:
     restart: always
     volumes:
       - .:/var/www
+  redis:
+    image: redis:6-alpine
+    restart: always
+  redis-gui:
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    image: rediscommander/redis-commander
+    ports:
+      - "11007:8081"
   s3server:
     command: server /data --console-address ":9001"
     environment:

@@ -16,6 +16,9 @@ services:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
         arguments: ['@annotation_reader']
 
+    App\Application\Services\OTPService:
+        arguments: ['@doctrine.orm.entity_manager', '@session']
+
     App\Application\Services\AWSS3Service:
         arguments:
             $endpoint: '%env(resolve:MINIO_ENDPOINT)%'

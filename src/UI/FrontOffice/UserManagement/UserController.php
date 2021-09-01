@@ -112,11 +112,53 @@
         }
 
         /**
+         * @Breadcrumb("edit.security")
+         * @Route("/{user}/edit/security.html", name="edit.security", methods={"GET"})
+         */
+        public function editSecurity(Request $request, User $user){
+            if($this->isCsrfTokenValid('up-'.$user->getId(), $request->get('_token'))){
+                $id0 = $request->get('id');
+                $id1 = $id0 - 1;
+                $data = $user->getOtp();
+                $data0 = $data[$id0];
+                $data1 = $data[$id1];
+                $data[$id0] = $data1;
+                $data[$id1] = $data0;
+                $user->setOtp($data);
+
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($user);
+                $em->flush();
+
+                return $this->redirectToRoute('frontoffice.users.edit.security', ['user' => $user]);
+            } elseif($this->isCsrfTokenValid('down-'.$user->getId(), $request->get('_token'))){
+                $id0 = $request->get('id');
+                $id1 = $id0 + 1;
+                $data = $user->getOtp();
+                $data0 = $data[$id0];
+                $data1 = $data[$id1];
+                $data[$id0] = $data1;
+                $data[$id1] = $data0;
+                $user->setOtp($data);
+
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($user);
+                $em->flush();
+
+                return $this->redirectToRoute('frontoffice.users.edit.security', ['user' => $user]);
+            }
+
+            return $this->render("FrontOffice/User/edit.security.html.twig", [
+                'user'  => $user
+            ]);
+        }
+
+        /**
          * @Breadcrumb("delete")
          * @Route("/{user}/delete.html", name="delete", methods={"GET"})
          */
         public function delete(Request $request, User $user, AWSS3Service $AWSS3){
-            if($this->isCsrfTokenValid('delete-'.$request->get('user'), $request->get('_token'))){
+            if($this->isCsrfTokenValid('delete-'.$user->getId(), $request->get('_token'))){
                 if($user->getAvatar()) $AWSS3->deleteObjectUpload('user', $user->getAvatar());
 
                 $em = $this->getDoctrine()->getManager();

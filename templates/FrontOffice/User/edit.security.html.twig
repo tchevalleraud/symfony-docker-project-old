@@ -1,0 +1,83 @@
+{% extends "FrontOffice/User/edit._base.html.twig" %}
+
+{% block title %}{{ user.lastname }} {{ user.firstname }} - {{ parent() }}{% endblock %}
+
+{% block topbar_left %}
+    <div data-kt-swapper="true" data-kt-swapper-mode="prepend" data-kt-swapper-parent="{default: '#kt_content_container', 'lg': '#kt_header_nav'}" class="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0">
+        <h1 class="d-flex align-items-center text-dark fw-bolder fs-3 my-1">User management</h1>
+        <span class="h-20px border-gray-200 border-start mx-4"></span>
+        <ul class="breadcrumb breadcrumb-separatorless fw-bold fs-7 my-1">
+            {{ breadcrumb(app.request, {'user.fullname': user.fullname}) }}
+        </ul>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="card pt-4 mb-6 mb-xl-9">
+        <div class="card-header border-0">
+            <div class="card-title flex-column">
+                <h2 class="mb-1">Two Step Authentication</h2>
+                <div class="fs-6 fw-bold text-muted">Keep your account extra secure with a second authentication step.</div>
+            </div>
+            <div class="card-toolbar">
+                <button type="button" class="btn btn-light-primary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-flip="top-end">
+                    <span class="svg-icon svg-icon-3">{{ include('_svg/duotune/technology/teh004.svg') }}</span>
+                    Add Authentication Step
+                </button>
+                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-6 w-300px py-4" data-kt-menu="true" style="">
+                    <div class="menu-item px-3">
+                        <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#kt_modal_add_auth_app">Use authenticator app</a>
+                    </div>
+                    <div class="menu-item px-3">
+                        <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#kt_modal_add_one_time_password">Enable one-time password</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body pb-5">
+            {% for otp in user.otp %}
+                <div class="d-flex flex-stack">
+                    <div class="d-flex flex-column">
+                        <span>{{ otp | upper }}</span>
+                        <span class="text-muted fs-6">
+                            {% if otp == "email" %}{{ user.email }}
+                            {% elseif otp == "sms" %}{{ user.phone }}
+                            {% elseif otp == "google" %}-
+                            {% endif %}
+                        </span>
+                    </div>
+                    <div class="d-flex justify-content-end align-items-center">
+                        <a href="{{ path('frontoffice.users.edit.security', {'user': user, 'id': loop.index0, '_token': csrf_token('down-' ~ user)}) }}" class="btn btn-icon btn-active-light-primary w-30px h-30px ms-auto me-5 {% if loop.last %}disabled{% endif %}">
+                            <span class="svg-icon svg-icon-3">{{ include('_svg/duotune/arrows/arr004.svg') }}</span>
+                        </a>
+                        <a href="{{ path('frontoffice.users.edit.security', {'user': user, 'id': loop.index0, '_token': csrf_token('up-' ~ user)}) }}" class="btn btn-icon btn-active-light-primary w-30px h-30px ms-auto me-5 {% if loop.first %}disabled{% endif %}">
+                            <span class="svg-icon svg-icon-3">{{ include('_svg/duotune/arrows/arr003.svg') }}</span>
+                        </a>
+                        <button type="button" class="btn btn-icon btn-active-light-primary w-30px h-30px ms-auto me-5" data-bs-toggle="modal" data-bs-target="#kt_modal_add_one_time_password">
+                            <span class="svg-icon svg-icon-3">{{ include('_svg/duotune/art/art005.svg') }}</span>
+                        </button>
+                        <button type="button" class="btn btn-icon btn-active-light-primary w-30px h-30px ms-auto" id="kt_users_delete_two_step">
+                            <span class="svg-icon svg-icon-3">{{ include('_svg/duotune/general/gen027.svg') }}</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="separator separator-dashed my-5"></div>
+            {% else %}
+                <div class="text-gray-600">Disabled</div>
+                <div class="separator separator-dashed my-5"></div>
+            {% endfor %}
+            <div class="text-gray-600">If you lose your mobile device or security key, you can <a href="#" class="me-1">generate a backup code</a>to sign in to your account.</div>
+
+            <div class="separator separator-dashed my-5"></div>
+            {{ dump(user) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block modal %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

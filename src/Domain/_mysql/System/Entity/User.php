@@ -61,6 +61,11 @@
         private $email;
 
         /**
+         * @ORM\Column(type="string", length=20, nullable=true)
+         */
+        private $phone;
+
+        /**
          * @ORM\Column(type="string", length=2)
          * @OA\Property(type="string")
          */
@@ -83,6 +88,21 @@
          * )
          */
         private $apiToken;
+
+        /**
+         * @ORM\Column(type="json", nullable=true)
+         */
+        private $otp;
+
+        /**
+         * @ORM\Column(type="string", nullable=true)
+         */
+        private $otpCode;
+
+        /**
+         * @ORM\Column(type="string", nullable=true)
+         */
+        private $otpCodeSecret;
 
         /**
          * @ORM\Column(type="json")
@@ -188,6 +208,15 @@
             return $this;
         }
 
+        public function getPhone() {
+            return $this->phone;
+        }
+
+        public function setPhone($phone): self {
+            $this->phone = $phone;
+            return $this;
+        }
+
         public function getLocale(): string {
             return $this->locale;
         }
@@ -212,6 +241,33 @@
 
         public function setApiToken(string $apiToken): self {
             $this->apiToken = $apiToken;
+            return $this;
+        }
+
+        public function getOtp() {
+            return $this->otp;
+        }
+
+        public function setOtp($otp): self {
+            $this->otp = $otp;
+            return $this;
+        }
+
+        public function getOtpCode() {
+            return $this->otpCode;
+        }
+
+        public function setOtpCode($otpCode): self {
+            $this->otpCode = $otpCode;
+            return $this;
+        }
+
+        public function getOtpCodeSecret() {
+            return $this->otpCodeSecret;
+        }
+
+        public function setOtpCodeSecret($otpCodeSecret): self {
+            $this->otpCodeSecret = $otpCodeSecret;
             return $this;
         }
 

@@ -1,8 +1,12 @@
 <?php
     namespace App\UI\_default;
 
+    use App\Application\Services\OTPService;
     use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+    use Symfony\Component\HttpFoundation\Request;
     use Symfony\Component\HttpFoundation\Response;
+    use Symfony\Component\HttpFoundation\Session\Session;
+    use Symfony\Component\Messenger\MessageBusInterface;
     use Symfony\Component\Routing\Annotation\Route;
     use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
@@ -29,6 +33,38 @@
          */
         public function logout(){
             throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+        }
+
+        /**
+         * @Route({
+         *     "en": "/en/otp.html",
+         *     "fr": "/fr/otp.html"
+         * }, name="app.security.verify")
+         */
+        public function verifyOTP(Request $request, OTPService $OTPService, Session $session, MessageBusInterface $messageBus){
+            $error = null;
+
+            if($session->get('2fa-verified') == true) return $this->redirectToRoute('frontoffice.dashboard.index');
+
+            if($request->getMethod() == "POST"){
+                if($this->isCsrfTokenValid('authenticate-otp', $request->get('_csrf_token'))){
+                    $token = $request->request->get('_auth_code');
+
+                    try {
+                        $OTPService->verifyOTP($this->getUser(), $token);
+                        $session->set('2fa-verified', true);
+                        return $this->redirectToRoute("frontoffice.dashboard.index");
+                    } catch (\Exception $exception){
+                        $error = $exception->getMessage();
+                    }
+                }
+            } else {
+                $OTPService->getOTPVerify($this->getUser(), $messageBus);
+            }
+
+            return $this->render("_security/verify.html.twig", [
+                'error' => $error
+            ]);
         }
 
     }
