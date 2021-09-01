@@ -46,7 +46,7 @@
          * @Route("-test-message.html", name="test.message", methods={"GET"})
          */
         public function testMessage(){
-            $this->dispatchMessage(new TestEmailMessage("tchevalleraud@gmail.com", "test", "ceci est un test"), [new DelayStamp(45000)]);
+            $this->dispatchMessage(new TestEmailMessage("tchevalleraud@gmail.com", "test", "ceci est un test"));
             return $this->redirectToRoute("frontoffice.dashboard.v3");
         }
 

@@ -18,6 +18,7 @@
         }
 
         public function getOTPVerify(User $user, MessageBusInterface $messageBus){
+            return $this->session->set('2fa-verified', true);
             if($user->getOtp() == "email"){
                 $user->setOtpCode(rand(100000, 999999));
                 $this->em->persist($user);

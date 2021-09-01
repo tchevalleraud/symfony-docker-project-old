@@ -248,6 +248,16 @@
             return $this->otp;
         }
 
+        public function addOtp(string $otp): self {
+            $this->otp[] = $otp;
+            return $this;
+        }
+
+        public function removeOtp(string $otp): self {
+            $this->otp = array_diff($this->otp, [$otp]);
+            return $this;
+        }
+
         public function setOtp($otp): self {
             $this->otp = $otp;
             return $this;

@@ -19,7 +19,7 @@
                 <h2 class="mb-1">Two Step Authentication</h2>
                 <div class="fs-6 fw-bold text-muted">Keep your account extra secure with a second authentication step.</div>
             </div>
-            {% if user.otp | length < 3 %}
+            {% if user.otp | length < 3 and user.phone is not null  %}
             <div class="card-toolbar">
                 <button type="button" class="btn btn-light-primary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-flip="top-end">
                     <span class="svg-icon svg-icon-3">{{ include('_svg/duotune/technology/teh004.svg') }}</span>
@@ -28,17 +28,17 @@
                 <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-6 w-300px py-4" data-kt-menu="true" style="">
                     {% if "email" not in user.otp %}
                         <div class="menu-item px-3">
-                            <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#kt_modal_add_one_time_password">Enable OTP by email</a>
+                            <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#frontoffice_users_modal_otp_email">Enable OTP by email</a>
                         </div>
                     {% endif %}
                     {% if "google" not in user.otp %}
                         <div class="menu-item px-3">
-                            <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#kt_modal_add_auth_app">Enable OTP by Google Authenticator</a>
+                            <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#frontoffice_users_modal_otp_google">Enable OTP by Google Authenticator</a>
                         </div>
                     {% endif %}
-                    {% if "sms" not in user.otp %}
+                    {% if "sms" not in user.otp and user.phone is not null %}
                         <div class="menu-item px-3">
-                            <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#kt_modal_add_one_time_password">Enable OTP by SMS</a>
+                            <a href="#" class="menu-link px-3" data-bs-toggle="modal" data-bs-target="#frontoffice_users_modal_otp_sms">Enable OTP by SMS</a>
                         </div>
                     {% endif %}
                 </div>
@@ -64,12 +64,19 @@
                         <a href="{{ path('frontoffice.users.edit.security', {'user': user, 'id': loop.index0, '_token': csrf_token('up-' ~ user)}) }}" class="btn btn-icon btn-active-light-primary w-30px h-30px ms-auto me-5 {% if loop.first %}disabled{% endif %}">
                             <span class="svg-icon svg-icon-3">{{ include('_svg/duotune/arrows/arr003.svg') }}</span>
                         </a>
-                        <button type="button" class="btn btn-icon btn-active-light-primary w-30px h-30px ms-auto me-5" data-bs-toggle="modal" data-bs-target="#kt_modal_add_one_time_password">
-                            <span class="svg-icon svg-icon-3">{{ include('_svg/duotune/art/art005.svg') }}</span>
-                        </button>
-                        <button type="button" class="btn btn-icon btn-active-light-primary w-30px h-30px ms-auto" id="kt_users_delete_two_step">
-                            <span class="svg-icon svg-icon-3">{{ include('_svg/duotune/general/gen027.svg') }}</span>
-                        </button>
+                        {% if otp == "email" %}
+                            <button type="button" class="btn btn-icon btn-active-light-primary w-30px h-30px ms-auto me-5" data-bs-toggle="modal" data-bs-target="#frontoffice_users_modal_otp_email">
+                                <span class="svg-icon svg-icon-3">{{ include('_svg/duotune/art/art005.svg') }}</span>
+                            </button>
+                        {% elseif otp == "sms" %}
+                            <button type="button" class="btn btn-icon btn-active-light-primary w-30px h-30px ms-auto me-5" data-bs-toggle="modal" data-bs-target="#frontoffice_users_modal_otp_google">
+                                <span class="svg-icon svg-icon-3">{{ include('_svg/duotune/art/art005.svg') }}</span>
+                            </button>
+                        {% elseif otp == "google" %}
+                            <button type="button" class="btn btn-icon btn-active-light-primary w-30px h-30px ms-auto me-5" data-bs-toggle="modal" data-bs-target="#frontoffice_users_modal_otp_sms">
+                                <span class="svg-icon svg-icon-3">{{ include('_svg/duotune/art/art005.svg') }}</span>
+                            </button>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="separator separator-dashed my-5"></div>
@@ -86,66 +93,128 @@
 
 {% block modal %}
     {{ parent() }}
-    <div class="modal fade" id="kt_modal_add_auth_app" tabindex="-1" aria-hidden="true">
-        <!--begin::Modal dialog-->
+    <div class="modal fade" id="frontoffice_users_modal_otp_google" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered mw-650px">
-            <!--begin::Modal content-->
             <div class="modal-content">
-                <!--begin::Modal header-->
                 <div class="modal-header">
-                    <!--begin::Modal title-->
-                    <h2 class="fw-bolder">Add Authenticator App</h2>
-                    <!--end::Modal title-->
-                    <!--begin::Close-->
-                    <div class="btn btn-icon btn-sm btn-active-icon-primary" data-kt-users-modal-action="close">
-                        <!--begin::Svg Icon | path: icons/duotone/Navigation/Close.svg-->
-                        <span class="svg-icon svg-icon-1">
-														<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-															<g transform="translate(12.000000, 12.000000) rotate(-45.000000) translate(-12.000000, -12.000000) translate(4.000000, 4.000000)" fill="#000000">
-																<rect fill="#000000" x="0" y="7" width="16" height="2" rx="1" />
-																<rect fill="#000000" opacity="0.5" transform="translate(8.000000, 8.000000) rotate(-270.000000) translate(-8.000000, -8.000000)" x="0" y="7" width="16" height="2" rx="1" />
-															</g>
-														</svg>
-													</span>
-                        <!--end::Svg Icon-->
+                    <h2 class="fw-bolder">OTP by Google Authenticator</h2>
+                    <div class="btn btn-icon btn-sm btn-active-icon-primary" data-bs-dismiss="modal">
+                        <span class="svg-icon svg-icon-1">{{ include('_svg/duotone/Navigation/Close.svg') }}</span>
                     </div>
-                    <!--end::Close-->
                 </div>
-                <!--end::Modal header-->
-                <!--begin::Modal body-->
                 <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
-                    <!--begin::Content-->
                     <div class="fw-bolder d-flex flex-column justify-content-center mb-5">
-                        <!--begin::Label-->
-                        <div class="text-center mb-5" data-kt-add-auth-action="qr-code-label">Download the
-                            <a href="#">Authenticator app</a>, add a new account, then scan this barcode to set up your account.</div>
-                        <div class="text-center mb-5 d-none" data-kt-add-auth-action="text-code-label">Download the
-                            <a href="#">Authenticator app</a>, add a new account, then enter this code to set up your account.</div>
-                        <!--end::Label-->
-                        <!--begin::QR code-->
+                        <div class="text-center mb-5" data-kt-add-auth-action="qr-code-label">Download the <a href="#">Authenticator app</a>, add a new account, then scan this barcode to set up your account.</div>
+                        <div class="text-center mb-5 d-none" data-kt-add-auth-action="text-code-label">Download the <a href="#">Authenticator app</a>, add a new account, then enter this code to set up your account.</div>
                         <div class="d-flex flex-center" data-kt-add-auth-action="qr-code">
                             <img src="{{ otp.qrcode }}" alt="Scan this QR code" />
                         </div>
-                        <!--end::QR code-->
-                        <!--begin::Text code-->
                         <div class="border rounded p-5 d-flex flex-center d-none" data-kt-add-auth-action="text-code">
                             <div class="fs-1">{{ otp.secret }}</div>
                         </div>
-                        <!--end::Text code-->
                     </div>
-                    <!--end::Content-->
-                    <!--begin::Action-->
                     <div class="d-flex flex-center">
-                        <div class="btn btn-light-primary" data-kt-add-auth-action="text-code-button">Enter code manually</div>
-                        <div class="btn btn-light-primary d-none" data-kt-add-auth-action="qr-code-button">Scan barcode instead</div>
+                        <div class="btn btn-light-primary me-2" data-kt-add-auth-action="text-code-button">Enter code manually</div>
+                        <div class="btn btn-light-primary me-2 d-none" data-kt-add-auth-action="qr-code-button">Scan barcode instead</div>
+                        {% if "google" not in user.otp %}
+                            <a href="{{ path('frontoffice.users.edit.security', {'user': user, 'secret': otp.secret, '_token': csrf_token('otp-google-' ~ user)}) }}" class="btn btn-light-success" data-kt-add-auth-action="text-code-button">Valid activation</a>
+                            <a href="{{ path('frontoffice.users.edit.security', {'user': user, 'secret': otp.secret, '_token': csrf_token('otp-google-' ~ user)}) }}" class="btn btn-light-success d-none" data-kt-add-auth-action="qr-code-button">Valid activation</a>
+                        {% else %}
+                            <a href="{{ path('frontoffice.users.edit.security', {'user': user, 'secret': otp.secret, '_token': csrf_token('delete-otp-google-' ~ user)}) }}" class="btn btn-light-danger" data-kt-add-auth-action="text-code-button">Deactivation</a>
+                            <a href="{{ path('frontoffice.users.edit.security', {'user': user, 'secret': otp.secret, '_token': csrf_token('detete-otp-google-' ~ user)}) }}" class="btn btn-light-danger d-none" data-kt-add-auth-action="qr-code-button">Deactivation</a>
+                        {% endif %}
                     </div>
-                    <!--end::Action-->
                 </div>
-                <!--end::Modal body-->
             </div>
-            <!--end::Modal content-->
         </div>
-        <!--end::Modal dialog-->
+    </div>
+    <div class="modal fade" id="frontoffice_users_modal_otp_email" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered mw-650px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="fw-bolder">OTP by email</h2>
+                    <div class="btn btn-icon btn-sm btn-active-icon-primary" data-bs-dismiss="modal">
+                        <span class="svg-icon svg-icon-1">{{ include('_svg/duotone/Navigation/Close.svg') }}</span>
+                    </div>
+                </div>
+                <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
+                    {% if "email" not in user.otp %}
+                        <form class="form fv-plugins-bootstrap5 fv-plugins-framework" id="frontoffice_users_modal_otp_email_form" method="post">
+                            <div class="fv-row mb-7">
+                                <label class="fs-6 fw-bold form-label mb-2">
+                                    <span class="required">Email</span>
+                                </label>
+                                <input type="email" class="form-control form-control-solid" name="otp_email" value="{{ user.email }}" readonly="readonly">
+                            </div>
+                            <div class="fv-row mb-7 fv-plugins-icon-container">
+                                <label class="fs-6 fw-bold form-label mb-2">
+                                    <span class="required">Confirm password</span>
+                                </label>
+                                <input type="password" class="form-control form-control-solid" name="otp_confirm_password" value="">
+                                <div class="fv-plugins-message-container invalid-feedback"></div>
+                            </div>
+                            <input type="hidden" name="action" value="otp-email">
+                            <input type="hidden" name="token" value="{{ csrf_token('otp-email-' ~ user) }}">
+                            <div class="text-center pt-15">
+                                <button type="reset" class="btn btn-light me-3" data-bs-dismiss="modal">Cancel</button>
+                                <button class="btn btn-primary" id="frontoffice_users_modal_otp_email_submit">
+                                    <span class="indicator-label">Submit</span>
+                                    <span class="indicator-progress">Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                                </button>
+                            </div>
+                        </form>
+                    {% else %}
+                        <div class="d-flex flex-center">
+                            <a href="{{ path('frontoffice.users.edit.security', {'user': user, '_token': csrf_token('delete-otp-email-' ~ user)}) }}" class="btn btn-light-danger">Deactivation</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="frontoffice_users_modal_otp_sms" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered mw-650px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="fw-bolder">OTP by SMS</h2>
+                    <div class="btn btn-icon btn-sm btn-active-icon-primary" data-bs-dismiss="modal">
+                        <span class="svg-icon svg-icon-1">{{ include('_svg/duotone/Navigation/Close.svg') }}</span>
+                    </div>
+                </div>
+                <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
+                    {% if "sms" not in user.otp %}
+                        <form class="form fv-plugins-bootstrap5 fv-plugins-framework" id="frontoffice_users_modal_otp_sms_form" method="post">
+                            <div class="fv-row mb-7">
+                                <label class="fs-6 fw-bold form-label mb-2">
+                                    <span class="required">Phone</span>
+                                </label>
+                                <input type="email" class="form-control form-control-solid" name="otp_email" value="{{ user.phone }}" readonly="readonly">
+                            </div>
+                            <div class="fv-row mb-7 fv-plugins-icon-container">
+                                <label class="fs-6 fw-bold form-label mb-2">
+                                    <span class="required">Confirm password</span>
+                                </label>
+                                <input type="password" class="form-control form-control-solid" name="otp_confirm_password" value="">
+                                <div class="fv-plugins-message-container invalid-feedback"></div>
+                            </div>
+                            <input type="hidden" name="action" value="otp-sms">
+                            <input type="hidden" name="token" value="{{ csrf_token('otp-sms-' ~ user) }}">
+                            <div class="text-center pt-15">
+                                <button type="reset" class="btn btn-light me-3" data-bs-dismiss="modal">Cancel</button>
+                                <button class="btn btn-primary" id="frontoffice_users_modal_otp_sms_submit">
+                                    <span class="indicator-label">Submit</span>
+                                    <span class="indicator-progress">Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                                </button>
+                            </div>
+                        </form>
+                    {% else %}
+                        <div class="d-flex flex-center">
+                            <a href="{{ path('frontoffice.users.edit.security', {'user': user, '_token': csrf_token('delete-otp-sms-' ~ user)}) }}" class="btn btn-light-danger">Deactivation</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}
 
@@ -153,42 +222,44 @@
     {{ parent() }}
     <script type="application/javascript">
         "use strict";
-        var KTUsersAddAuthApp = function () {
-            const t = document.getElementById("kt_modal_add_auth_app"), e = new bootstrap.Modal(t);
+        var FrontOfficeUsersEditSecurity = function () {
+            var btn_otp_email;
+            var btn_otp_sms;
+            const t = document.getElementById("frontoffice_users_modal_otp_google"), e = new bootstrap.Modal(t);
             return {
                 init: function () {
-                    t.querySelector('[data-kt-users-modal-action="close"]').addEventListener("click", (t => {
-                        t.preventDefault(), Swal.fire({
-                            text: "Are you sure you would like to close?",
-                            icon: "warning",
-                            showCancelButton: !0,
-                            buttonsStyling: !1,
-                            confirmButtonText: "Yes, close it!",
-                            cancelButtonText: "No, return",
-                            customClass: {confirmButton: "btn btn-primary", cancelButton: "btn btn-active-light"}
-                        }).then((function (t) {
-                            t.value && e.hide()
-                        }))
-                    })), (() => {
-                        const e = t.querySelector('[ data-kt-add-auth-action="qr-code"]'),
-                            n = t.querySelector('[ data-kt-add-auth-action="text-code"]'),
-                            o = t.querySelector('[ data-kt-add-auth-action="qr-code-button"]'),
-                            a = t.querySelector('[ data-kt-add-auth-action="text-code-button"]'),
-                            c = t.querySelector('[ data-kt-add-auth-action="qr-code-label"]'),
-                            d = t.querySelector('[ data-kt-add-auth-action="text-code-label"]'), l = () => {
-                                e.classList.toggle("d-none"), o.classList.toggle("d-none"), c.classList.toggle("d-none"), n.classList.toggle("d-none"), a.classList.toggle("d-none"), d.classList.toggle("d-none")
-                            };
-                        a.addEventListener("click", (t => {
-                            t.preventDefault(), l()
-                        })), o.addEventListener("click", (t => {
-                            t.preventDefault(), l()
-                        }))
-                    })()
+                    btn_otp_email = document.querySelector("#frontoffice_users_modal_otp_email_submit");
+                    btn_otp_email.addEventListener("click", function (c){
+                        btn_otp_email.setAttribute("data-kt-indicator", "on");
+                        btn_otp_email.disabled = !0;
+                        document.getElementById("frontoffice_users_modal_otp_email_form").submit();
+                    });
+
+                    btn_otp_sms = document.querySelector("#frontoffice_users_modal_otp_sms_submit");
+                    btn_otp_sms.addEventListener("click", function (c){
+                        btn_otp_sms.setAttribute("data-kt-indicator", "on");
+                        btn_otp_sms.disabled = !0;
+                        document.getElementById("frontoffice_users_modal_otp_sms_form").submit();
+                    });
+
+                    const e = t.querySelector('[ data-kt-add-auth-action="qr-code"]'),
+                        n = t.querySelector('[ data-kt-add-auth-action="text-code"]'),
+                        o = t.querySelector('[ data-kt-add-auth-action="qr-code-button"]'),
+                        a = t.querySelector('[ data-kt-add-auth-action="text-code-button"]'),
+                        c = t.querySelector('[ data-kt-add-auth-action="qr-code-label"]'),
+                        d = t.querySelector('[ data-kt-add-auth-action="text-code-label"]'), l = () => {
+                            e.classList.toggle("d-none"), o.classList.toggle("d-none"), c.classList.toggle("d-none"), n.classList.toggle("d-none"), a.classList.toggle("d-none"), d.classList.toggle("d-none")
+                        };
+                    a.addEventListener("click", (t => {
+                        t.preventDefault(), l()
+                    })), o.addEventListener("click", (t => {
+                        t.preventDefault(), l()
+                    }))
                 }
             }
         }();
         KTUtil.onDOMContentLoaded((function () {
-            KTUsersAddAuthApp.init()
+            FrontOfficeUsersEditSecurity.init()
         }));
     </script>
 {% endblock %}

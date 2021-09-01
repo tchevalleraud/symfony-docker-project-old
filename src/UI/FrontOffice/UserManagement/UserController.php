@@ -12,6 +12,7 @@
     use Otp\GoogleAuthenticator;
     use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
     use Symfony\Component\HttpFoundation\Request;
+    use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
     use Symfony\Component\Routing\Annotation\Route;
 
     /**
@@ -114,9 +115,23 @@
 
         /**
          * @Breadcrumb("edit.security")
-         * @Route("/{user}/edit/security.html", name="edit.security", methods={"GET"})
+         * @Route("/{user}/edit/security.html", name="edit.security", methods={"GET", "POST"})
          */
-        public function editSecurity(Request $request, User $user){
+        public function editSecurity(Request $request, User $user, UserPasswordHasherInterface $passwordHasher){
+            if($request->getMethod() == "POST"){
+                if($request->get('action') == "otp-email" && $this->isCsrfTokenValid('otp-email-'.$user->getId(), $request->get('token'))){
+                    if($passwordHasher->isPasswordValid($user, $request->get('otp_confirm_password'))){
+                        $user->addOtp('email');
+
+                        $em = $this->getDoctrine()->getManager();
+                        $em->persist($user);
+                        $em->flush();
+
+                        return $this->redirectToRoute('frontoffice.users.edit.security', ['user' => $user]);
+                    } else throw new \Exception('password not match');
+                } else throw new \Exception('action invalid');
+            }
+
             if($this->isCsrfTokenValid('up-'.$user->getId(), $request->get('_token'))){
                 $id0 = $request->get('id');
                 $id1 = $id0 - 1;
@@ -132,7 +147,7 @@
                 $em->flush();
 
                 return $this->redirectToRoute('frontoffice.users.edit.security', ['user' => $user]);
-            } elseif($this->isCsrfTokenValid('down-'.$user->getId(), $request->get('_token'))){
+            } elseif ($this->isCsrfTokenValid('down-'.$user->getId(), $request->get('_token'))) {
                 $id0 = $request->get('id');
                 $id1 = $id0 + 1;
                 $data = $user->getOtp();
@@ -147,10 +162,39 @@
                 $em->flush();
 
                 return $this->redirectToRoute('frontoffice.users.edit.security', ['user' => $user]);
+            } elseif($this->isCsrfTokenValid('otp-google-'.$user->getId(), $request->get('_token'))){
+                $user->addOtp('google');
+                $user->setOtpCodeSecret($request->get('secret'));
+
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($user);
+                $em->flush();
+
+                return $this->redirectToRoute('frontoffice.users.edit.security', ['user' => $user]);
+            } elseif($this->isCsrfTokenValid('delete-otp-google-'.$user->getId(), $request->get('_token'))){
+                $user->removeOtp('google');
+                $user->setOtpCodeSecret(null);
+
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($user);
+                $em->flush();
+
+                return $this->redirectToRoute('frontoffice.users.edit.security', ['user' => $user]);
+            } elseif($this->isCsrfTokenValid('delete-otp-email-'.$user->getId(), $request->get('_token'))){
+                $user->removeOtp('email');
+
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($user);
+                $em->flush();
+
+                return $this->redirectToRoute('frontoffice.users.edit.security', ['user' => $user]);
             }
 
             if($user->getOtpCodeSecret() === null){
                 $secret = GoogleAuthenticator::generateRandom();
+                $qrcode = GoogleAuthenticator::getQrCodeUrl('totp', 'Symfony docker project '.$user->getEmail(), $secret);
+            } else {
+                $secret = $this->getUser()->getOtpCodeSecret();
                 $qrcode = GoogleAuthenticator::getQrCodeUrl('totp', 'Symfony docker project '.$user->getEmail(), $secret);
             }
 
