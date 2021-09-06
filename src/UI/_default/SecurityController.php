@@ -43,6 +43,7 @@
          */
         public function verifyOTP(Request $request, OTPService $OTPService, Session $session, MessageBusInterface $messageBus){
             $error = null;
+            $otp_method = $request->get('_otp_method') ? $request->get('_otp_method') : $this->getUser()->getOtp()[0];
 
             if($session->get('2fa-verified') == true) return $this->redirectToRoute('frontoffice.dashboard.index');
 
@@ -51,7 +52,7 @@
                     $token = $request->request->get('_auth_code');
 
                     try {
-                        $OTPService->verifyOTP($this->getUser(), $token);
+                        $OTPService->verifyOTP($otp_method, $this->getUser(), $token);
                         $session->set('2fa-verified', true);
                         return $this->redirectToRoute("frontoffice.dashboard.index");
                     } catch (\Exception $exception){
@@ -59,11 +60,13 @@
                     }
                 }
             } else {
-                $OTPService->getOTPVerify($this->getUser(), $messageBus);
+                $OTPService->getOTPVerify($otp_method, $this->getUser(), $messageBus);
             }
 
             return $this->render("_security/verify.html.twig", [
-                'error' => $error
+                'error'         => $error,
+                'otp_method'    => $otp_method,
+                'user'          => $this->getUser()
             ]);
         }
 

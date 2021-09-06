@@ -13,7 +13,10 @@
         <div class="text-center mb-10">
             <h1 class="text-dark mb-3">Two Step Verification</h1>
             <div class="text-muted fw-bold fs-5 mb-5">Enter the verification code we sent to</div>
-            <div class="fw-bolder text-dark fs-3">******7859</div>
+            {% if otp_method == "email" %}<div class="fw-bolder text-dark fs-3">{{ user.email }}</div>
+            {% elseif otp_method == "sms" %}<div class="fw-bolder text-dark fs-3">{{ user.phone }}</div>
+            {% elseif otp_method == "google" %}<div class="fw-bolder text-dark fs-3">-</div>
+            {% endif %}
         </div>
         <div class="mb-10 px-md-10">
             <div class="fw-bolder text-start text-dark fs-6 mb-1 ms-1">Type your 6 digit security code</div>
@@ -28,6 +31,7 @@
             <div class="d-flex flex-wrap flex-stack">
                 <input id="_auth_code" class="form-control form-control-lg" type="hidden" name="_auth_code" autocomplete="off"/>
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate-otp') }}">
+                <input type="hidden" name="_otp_method" value="{{ otp_method }}">
             </div>
         </div>
         <div class="d-flex flex-center">
@@ -37,6 +41,15 @@
             </button>
         </div>
     </form>
+    <div class="text-center fw-bold fs-5">
+        <span class="text-muted me-1">Didn’t get the code ?</span>
+        {% for otp in user.otp %}
+            {% if not loop.first %}
+                <a href="{{ path('app.security.verify', {'_otp_method': otp}) }}" class="link-primary fw-bolder fs-5 me-1">{{ otp }}</a>
+                {% if not loop.last %}<span class="text-muted me-1">or</span>{% endif %}
+            {% endif %}
+        {% endfor %}
+    </div>
 {% endblock %}
 
 {% block javascripts %}

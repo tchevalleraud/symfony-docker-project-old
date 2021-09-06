@@ -19,7 +19,7 @@
                 <h2 class="mb-1">Two Step Authentication</h2>
                 <div class="fs-6 fw-bold text-muted">Keep your account extra secure with a second authentication step.</div>
             </div>
-            {% if user.otp | length < 3 and user.phone is not null  %}
+            {% if (user.otp | length < 3 and user.phone is not null) or (user.otp | length < 2 and user.phone is null) %}
             <div class="card-toolbar">
                 <button type="button" class="btn btn-light-primary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-flip="top-end">
                     <span class="svg-icon svg-icon-3">{{ include('_svg/duotune/technology/teh004.svg') }}</span>
@@ -69,11 +69,11 @@
                                 <span class="svg-icon svg-icon-3">{{ include('_svg/duotune/art/art005.svg') }}</span>
                             </button>
                         {% elseif otp == "sms" %}
-                            <button type="button" class="btn btn-icon btn-active-light-primary w-30px h-30px ms-auto me-5" data-bs-toggle="modal" data-bs-target="#frontoffice_users_modal_otp_google">
+                            <button type="button" class="btn btn-icon btn-active-light-primary w-30px h-30px ms-auto me-5" data-bs-toggle="modal" data-bs-target="#frontoffice_users_modal_otp_sms">
                                 <span class="svg-icon svg-icon-3">{{ include('_svg/duotune/art/art005.svg') }}</span>
                             </button>
                         {% elseif otp == "google" %}
-                            <button type="button" class="btn btn-icon btn-active-light-primary w-30px h-30px ms-auto me-5" data-bs-toggle="modal" data-bs-target="#frontoffice_users_modal_otp_sms">
+                            <button type="button" class="btn btn-icon btn-active-light-primary w-30px h-30px ms-auto me-5" data-bs-toggle="modal" data-bs-target="#frontoffice_users_modal_otp_google">
                                 <span class="svg-icon svg-icon-3">{{ include('_svg/duotune/art/art005.svg') }}</span>
                             </button>
                         {% endif %}
@@ -81,12 +81,10 @@
                 </div>
                 <div class="separator separator-dashed my-5"></div>
             {% else %}
-                <div class="text-gray-600">Disabled</div>
+                <div class="text-danger">Disabled</div>
                 <div class="separator separator-dashed my-5"></div>
             {% endfor %}
             <div class="text-gray-600">If you lose your mobile device or security key, you can <a href="#" class="me-1">generate a backup code</a>to sign in to your account.</div>
-
-            <div class="separator separator-dashed my-5"></div>
         </div>
     </div>
 {% endblock %}

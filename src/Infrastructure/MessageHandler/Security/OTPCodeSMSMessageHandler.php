@@ -2,27 +2,26 @@
     namespace App\Infrastructure\MessageHandler\Security;
 
     use App\Infrastructure\Message\Security\OTPCodeEmailMessage;
+    use App\Infrastructure\Message\Security\OTPCodeSMSMessage;
     use Symfony\Component\Mailer\MailerInterface;
     use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
     use Symfony\Component\Mime\Email;
     use Twig\Environment;
 
-    class OTPCodeEmailMessageHandler implements MessageHandlerInterface {
+    class OTPCodeSMSMessageHandler implements MessageHandlerInterface {
 
-        private $twig;
-        private $noReplyEmail;
+        private $smsSender;
         private $mailer;
 
-        public function __construct(Environment $twig, $noReplyEmail, MailerInterface $mailer){
-            $this->twig = $twig;
-            $this->noReplyEmail = $noReplyEmail;
+        public function __construct($smsSender, MailerInterface $mailer){
+            $this->smsSender = $smsSender;
             $this->mailer = $mailer;
         }
 
-        public function __invoke(OTPCodeEmailMessage $message){
+        public function __invoke(OTPCodeSMSMessage $message){
             $email = (new Email())
-                ->from($this->noReplyEmail)
-                ->to($message->getTo())
+                ->from($this->smsSender."@mobile.local")
+                ->to($message->getTo()."@mobile.local")
                 ->subject("OTP Code")
                 ->text("Your code is : ".$message->getOTPCode());
             $this->mailer->send($email);

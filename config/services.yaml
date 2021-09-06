@@ -4,6 +4,9 @@ services:
     _defaults:
         autowire: true
         autoconfigure: true
+        bind:
+            $noReplyEmail: "no-reply@pwsb.fr"
+            $smsSender: "+33600000000"
 
     App\:
         resource: '../src/'

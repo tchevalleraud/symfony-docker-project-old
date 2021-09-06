@@ -8,15 +8,17 @@
 
     class TestEmailMessageHandler implements MessageHandlerInterface {
 
+        private $noReplyEmail;
         private $mailer;
 
-        public function __construct(MailerInterface $mailer){
+        public function __construct($noReplyEmail, MailerInterface $mailer){
+            $this->noReplyEmail = $noReplyEmail;
             $this->mailer = $mailer;
         }
 
         public function __invoke(TestEmailMessage $message){
             $email = (new Email())
-                ->from($message->getFrom())
+                ->from($this->noReplyEmail)
                 ->to($message->getTo())
                 ->subject($message->getSubject())
                 ->text($message->getContent());

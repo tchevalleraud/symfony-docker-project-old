@@ -39,6 +39,7 @@
             $permittedRoutes = [
                 'app.security.',
                 'api.v2',
+                '_profiler',
                 '_wdt'
             ];
             $return = true;

@@ -11,4 +11,5 @@ framework:
 
         routing:
             App\Infrastructure\Message\Security\OTPCodeEmailMessage: priority_high
+            App\Infrastructure\Message\Security\OTPCodeSMSMessage: priority_high
             App\Infrastructure\Message\Test\TestEmailMessage: priority_normal

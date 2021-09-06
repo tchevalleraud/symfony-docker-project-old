@@ -3,7 +3,10 @@
 
     use App\Domain\_mysql\System\Entity\User;
     use App\Infrastructure\Message\Security\OTPCodeEmailMessage;
+    use App\Infrastructure\Message\Security\OTPCodeSMSMessage;
     use Doctrine\ORM\EntityManagerInterface;
+    use Otp\Otp;
+    use ParagonIE\ConstantTime\Encoding;
     use Symfony\Component\HttpFoundation\Session\Session;
     use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -17,27 +20,44 @@
             $this->session      = $session;
         }
 
-        public function getOTPVerify(User $user, MessageBusInterface $messageBus){
-            return $this->session->set('2fa-verified', true);
-            if($user->getOtp() == "email"){
+        public function getOTPVerify($otp_method, User $user, MessageBusInterface $messageBus){
+            if($otp_method == "email"){
                 $user->setOtpCode(rand(100000, 999999));
                 $this->em->persist($user);
                 $this->em->flush();
 
                 $messageBus->dispatch(new OTPCodeEmailMessage($user->getEmail(), $user->getOtpCode()));
-            } elseif ($user->getOpt() == "google"){
-                dd("Nothing");
+            } elseif($otp_method == "sms"){
+                $user->setOtpCode(rand(100000, 999999));
+                $this->em->persist($user);
+                $this->em->flush();
+
+                $messageBus->dispatch(new OTPCodeSMSMessage($user->getPhone(), $user->getOtpCode()));
+            } elseif($otp_method == "google") {
+                return true;
             } else {
                 $this->session->set('2fa-verified', true);
             }
         }
 
-        public function verifyOTP(User $user, $token){
-            if($user->getOtp() == "email"){
+        public function verifyOTP($otp_method, User $user, $token){
+            if($otp_method == "email"){
                 if($token == $user->getOtpCode()){
                     $user->setOtpCode(null);
                     $this->em->persist($user);
                     $this->em->flush();
+                    return true;
+                }
+            } elseif($otp_method == "sms"){
+                if($token == $user->getOtpCode()){
+                    $user->setOtpCode(null);
+                    $this->em->persist($user);
+                    $this->em->flush();
+                    return true;
+                }
+            } elseif($otp_method == "google"){
+                $otp = new Otp();
+                if($otp->checkTotp(Encoding::base32DecodeUpper($user->getOtpCodeSecret()), $token)){
                     return true;
                 }
             }

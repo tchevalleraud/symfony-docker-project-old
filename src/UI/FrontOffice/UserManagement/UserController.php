@@ -24,6 +24,7 @@
      * @Breadcrumb("show.overview", label="overview", route="frontoffice.users.show.overview", params={"user"}, parent="show")
      * @Breadcrumb("edit", label="edit #user.fullname#", route="frontoffice.users.edit", params={"user"}, parent="index")
      * @Breadcrumb("edit.overview", label="overview", route="frontoffice.users.edit.overview", params={"user"}, parent="edit")
+     * @Breadcrumb("edit.security", label="security", route="frontoffice.users.edit.security", params={"user"}, parent="edit")
      * @Breadcrumb("delete", label="delete", route="frontoffice.users.delete", params={"user"}, parent="edit")
      *
      * @Route("users", name="users.")
@@ -129,6 +130,16 @@
 
                         return $this->redirectToRoute('frontoffice.users.edit.security', ['user' => $user]);
                     } else throw new \Exception('password not match');
+                } elseif($request->get('action') == "otp-sms" && $this->isCsrfTokenValid('otp-sms-'.$user->getId(), $request->get('token'))) {
+                    if($passwordHasher->isPasswordValid($user, $request->get('otp_confirm_password'))){
+                        $user->addOtp('sms');
+
+                        $em = $this->getDoctrine()->getManager();
+                        $em->persist($user);
+                        $em->flush();
+
+                        return $this->redirectToRoute('frontoffice.users.edit.security', ['user' => $user]);
+                    } else throw new \Exception('password not match');
                 } else throw new \Exception('action invalid');
             }
 
@@ -182,6 +193,14 @@
                 return $this->redirectToRoute('frontoffice.users.edit.security', ['user' => $user]);
             } elseif($this->isCsrfTokenValid('delete-otp-email-'.$user->getId(), $request->get('_token'))){
                 $user->removeOtp('email');
+
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($user);
+                $em->flush();
+
+                return $this->redirectToRoute('frontoffice.users.edit.security', ['user' => $user]);
+            } elseif($this->isCsrfTokenValid('delete-otp-sms-'.$user->getId(), $request->get('_token'))){
+                $user->removeOtp('sms');
 
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($user);
